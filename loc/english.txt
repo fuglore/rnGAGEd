@@ -1,0 +1,51 @@
+{
+	"menu_rngaged_title" : "RNGAGED OPTIONS",
+	
+	"menu_rngaged_disable_balance_changes_title" : "DISABLE BALANCE CHANGES",
+	"menu_rngaged_disable_balance_changes_desc" : "Disables all mechanical changes related to the player, including stats, skills, perkdecks and other changes. Cyberfiend stays enabled. NOTE: Requires a game restart to properly take effect.",
+	
+	"menu_rngaged_disable_no_retention_reloads_title" : "DISABLE NO RETENTION RELOADS",
+	"menu_rngaged_disable_no_retention_reloads_desc" : "Disables the mechanic in which reloading while a magazine still has ammo in it would use the remaining ammo in it.",
+	
+	"menu_rngaged_disable_stepped_reloads_title" : "DISABLE STEPPED RELOADS",
+	"menu_rngaged_disable_stepped_reloads_desc" : "Disables the mechanic in which cancelling a reload will keep track of how far the reload animation has progressed, allowing you to continue reloading from that point later.",
+	
+	"menu_rngaged_disable_melee_cleave_title" : "DISABLE MELEE CLEAVE",
+	"menu_rngaged_disable_melee_cleave_desc" : "Disables the cleaving melee mechanic which allows melee attacks to hit multiple enemies based on it's swing arc. NOTE: Requires a heist restart.",
+	
+	"menu_rngaged_disable_enemy_projectiles_title" : "DISABLE ENEMY PROJECTILES",
+	"menu_rngaged_disable_enemy_projectiles_desc" : "Disables the enemy projectile bullets.",
+	
+	"menu_rngaged_disable_head_height_changes_title" : "DISABLE PEEK FROM COVER",
+	"menu_rngaged_disable_head_height_changes_desc" : "Disables the camera height changes for the player when in steelsight near cover.",
+	
+	"menu_rngaged_headbob_intensity_title" : "HEADBOB/VIEWMODEL SWAY INTENSITY",
+	"menu_rngaged_headbob_intensity_desc" : "Controls the intensity of the headbob/view sway caused by movement. Setting this to a comfortable value might help those prone to motion sickness.",
+	
+	"menu_deck_sandy_name" : "Cyberfiend",
+	"menu_deck_sandy_desc" : "Your sources are shady- the shadiest- but you've managed to get your hands on some one-of-a-kind tech.$NL;$NL;After copious amounts of dangerous experimental treatments, shady cybernetic implants and enhancements from all over the world, you have become something more; Goals you thought were once unattainable became within your reach.$NL;$NL;The Cyberfiend is a living weapon, a specialist capable of spreading mass destruction; Utilizing hyper-offensive tactics and their insatiable bloodlust, their cybernetics increase their physical and mental capacities, allowing for superhuman feats that no cop can match.",
+
+	"menu_deck_sandy_1" : "A Saint's Invention",
+	"menu_deck_sandy_1_desc" : "Unlocks and equips the Overclock Tuner. Changing to another perk deck will make the Tuner unavailable again. When activated, time will slow down for ##10## seconds, but you won't, granting you regular movement speed in slowed down time.$NL;$NL;Activating the Overclock Tuner while time is still slowed down will stop the effect early.$NL;$NL;The Overclock Tuner has a cooldown of ##11## seconds.",
+	"menu_deck_sandy_1_short" : "Unlocks and equips the Overclock Tuner. When activated, time will slow down for ##10## seconds, but you won't, granting you regular movement speed in slowed down time; Activating the Overclock Tuner while time is still slowed down will stop the effect early. - The Overclock Tuner has a cooldown of ##11## seconds.",
+	
+	"menu_deck_sandy_3" : "Subdermal Armor",
+	"menu_deck_sandy_3_desc" : "You convert ##100%## of your armor above ##20## into Health.",
+	"menu_deck_sandy_3_short" : "You convert ##100%## of your armor above ##20## into Health.",
+	
+	"menu_deck_sandy_5" : "Ballistic Coprocessor",
+	"menu_deck_sandy_5_desc" : "You gain ##25%## increased reload speed and ##100## increased weapon swap speed.",
+	"menu_deck_sandy_5_short" : "You gain ##25%## increased reload speed and ##100## increased weapon swap speed.",
+	
+	"menu_deck_sandy_7" : "Painducer",
+	"menu_deck_sandy_7_desc" : "You take ##50%## less damage while the Overclock Tuner is active.",
+	"menu_deck_sandy_7_short" : "You take ##50%## less damage while the Overclock Tuner is active.",
+	
+	"menu_deck_sandy_9" : "All The Way To The Top",
+	"menu_deck_sandy_9_desc" : "When killing an enemy you restore ##10## health.",
+	"menu_deck_sandy_9_short" : "When killing an enemy you restore ##10## health.",
+	
+	"bm_grenade_sandy" : "Overclock Tuner",
+	"bm_grenade_sandy_desc" : "The nervous system controls our perception of the world around us, so what happens when we crank up our perception into overdrive?$NL;$NL;The Overclock Tuner is the answer to that question: Allowing for precise manipulations of your body, within fractions of a second.$NL;$NL;You can now reap the rewards of your gut-wrenching experimental surgeries, other than just chronic nosebleeds; letting you react and act with the world around you, faster than a speeding bullet.",
+	"bm_skill_locked_sandy_tuner" : "Requires the Cyberfiend perkdeck equipped",
+}

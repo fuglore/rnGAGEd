@@ -1,0 +1,68 @@
+{
+	"menu_id" : "rngaged_options",
+	"parent_menu_id" : "blt_options",
+	"title" : "menu_rngaged_title",
+	"back_callback" : "callback_rngaged_close",
+	"items" : [
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_balance_changes",
+			"title" : "menu_rngaged_disable_balance_changes_title",
+			"description" : "menu_rngaged_disable_balance_changes_desc",
+			"callback" : "callback_rngaged_disable_balance_changes",
+			"value" : "disable_balance_changes"
+		},
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_no_retention_reloads",
+			"title" : "menu_rngaged_disable_no_retention_reloads_title",
+			"description" : "menu_rngaged_disable_no_retention_reloads_desc",
+			"callback" : "callback_rngaged_disable_no_retention_reloads",
+			"value" : "disable_no_retention_reloads"
+		},
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_stepped_reloads",
+			"title" : "menu_rngaged_disable_stepped_reloads_title",
+			"description" : "menu_rngaged_disable_stepped_reloads_desc",
+			"callback" : "callback_rngaged_disable_stepped_reloads",
+			"value" : "disable_stepped_reloads"
+		},
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_melee_cleave",
+			"title" : "menu_rngaged_disable_melee_cleave_title",
+			"description" : "menu_rngaged_disable_melee_cleave_desc",
+			"callback" : "callback_rngaged_disable_melee_cleave",
+			"value" : "disable_melee_cleave"
+		},
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_enemy_projectiles",
+			"title" : "menu_rngaged_disable_enemy_projectiles_title",
+			"description" : "menu_rngaged_disable_enemy_projectiles_desc",
+			"callback" : "callback_rngaged_disable_enemy_projectiles",
+			"value" : "disable_enemy_projectiles"
+		},
+		{
+			"type" : "toggle",
+			"id" : "rngaged_disable_head_height_changes",
+			"title" : "menu_rngaged_disable_head_height_changes_title",
+			"description" : "menu_rngaged_disable_head_height_changes_desc",
+			"callback" : "callback_rngaged_disable_head_height_changes",
+			"value" : "disable_head_height_changes"
+		},
+		{
+			"type" : "slider",
+			"id" : "rngaged_headbob_intensity",
+			"title" : "menu_rngaged_headbob_intensity_title",
+			"description" : "menu_rngaged_headbob_intensity_desc",
+			"callback" : "callback_rngaged_headbob_intensity",
+			"min" : "0",
+			"max" : "1",
+			"step" : "0.05",
+			"show_value" : "true",
+			"value" : "headbob_intensity"
+		},
+	]
+}

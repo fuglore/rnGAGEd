@@ -1,0 +1,6 @@
+<table name="Re-enGAGEd">
+   	<Localization directory="loc" default="english.txt">
+		<loc file="english.txt" language="english"/>
+	</Localization>
+	<AddFiles file="rengagedfiles.xml"/>
+</table>

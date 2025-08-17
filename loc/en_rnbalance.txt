@@ -1,0 +1,205 @@
+{
+	"bm_equipment_doctor_bag_desc": "To use the Doctor Bag, you need to place it by holding $BTN_USE_ITEM;. Once placed it cannot be moved, but it can be used by you and your crew by holding $BTN_INTERACT;. Using the Doctor Bag will restore one down and all of your health. It can only be used twice.$NL;$NL;When the Doctor Bag is consumed, it disappears. You can see how many uses are left by looking at the Doctor Bag.$NL;$NL;The Doctor Bag is a portable bag, usually used by a physician or other medical profession to transport medical supplies and medicine, with enough tools to do quick field surgeries and blood transfusions.$NL;$NL;Hush, a little loch ness hamster baboon blood never hurt anyone.",
+	
+	"bm_equipment_first_aid_kit_desc" : "To use the First Aid Kit, you need to place it by holding $BTN_USE_ITEM;. Once placed it cannot be moved, but it can be used by you and your crew by holding $BTN_INTERACT; to regain health.$NL;$NL;A deployed first aid kit can be used once and when it is consumed, it disappears.$NL;$NL;The First Aid Kit is a collection of supplies and equipment for use in giving first aid, and includes a LOT of painkillers.$NL;$NL;Also gasoline, battery acid, magic crystals and candy bars.",
+	
+	"bm_grenade_dada_com_desc" : "A grenade styled after a russian nesting doll, normally crafted from linden wood, these are made out of steel.$NL;$NL;When armed, the grenade will instantly collide on impact with surfaces or enemies, dealing serious damage for glorious mother russia.",
+	
+	"bm_wpn_prj_jav_desc" : "The javelin is a spear-like weapon, weighted for throwing. Archelogical evidence points towards a stick with a pointy end being used as a weapon since the dawn of man, but there are no records of it being used specifically for robberies...until you, that is.$NL;$NL;A good throw will go right through modern body armor, if it ain't broke, don't fix it.",
+	
+	"bm_menu_auto_counter": "Auto-Counter",
+	"bm_menu_auto_counter_true": "Y",
+	"bm_menu_auto_counter_false": "N",
+	
+	"bm_wp_upg_a_custom_desc": "Less pellets. But more impact.",
+	
+	"bm_wp_wtf_sbl_sights":  "...What the fuck are you doing?",
+	
+	"menu_deckall_2": "Conditioning",
+	"menu_deckall_2_desc": "You deal ##25%## increased headshot damage against enemies.\n\nYou gain an additional ##10%## movement speed and ##20%## increased speed while climbing ladders.\n\nYou also sprint ##25%## faster.",
+	
+	"menu_deckall_6": "Sharp Dresser",
+	"menu_deckall_6_desc": "Unlocks the OVE9000 portable saw for you to use as a secondary weapon.\n\nYou replace your saw blades with carbon blades, increasing your saw efficiency by ##40%##.\n\nUnlocks an armor bag equipment for you to use. The armor bag can be used to change your armor during a heist.",
+	
+	"menu_deckall_8": "Tools Of Trade",
+	"menu_deckall_8_desc": "You deal ##5%## more damage with bullet-based weapons, fire-based weapons and the OVE9000 saws.\n\nYour interaction speed with Doctor Bags is increased by ##20%##.\n\nYou gain access to all insider assets.\n\nCleaning costs after killing a civilian is reduced by ##75%##.",
+	
+	"menu_deck5_3_desc" : "Your armor recovery rate is increased by an additional ##10%##.$NL;$NL;Ammo capacity for your akimbo weapons are increased by ##50%##.",
+	
+	"menu_deck5_9_desc": "Your armor recovery rate is increased by an additional ##10%##.$NL;$NL;Your armor will recover ##3## seconds after being broken no matter what the situation.$NL;$NL;Deck Completion Bonus: Your chance of getting a higher quality item during a Payday is increased by ##$multiperk5;##.",
+	"menu_deck5_9_short": "Your armor recovery rate is increased by an additional ##10%##.$NL;$NL;Your armor will recover ##3## seconds after being broken no matter what the situation.",
+	
+	"menu_deck8_7_desc": "When you are surrounded by three enemies or more, you receive ##12%## less damage from enemies.\n\nYour second and each consecutive melee hit within ##1## second of the last one will ##250%## more damage.",
+	"menu_deck8_7_short": "When you are surrounded by three enemies or more, you receive ##12%## less damage from enemies. Your second and each consecutive melee hit within ##1## second of the last one will ##250%## more damage.",
+	
+	"menu_deck8_5_desc": "When you are within medium range of an enemy, you receive an additional ##8%## less damage from enemies.\n\nOVERDOG's effect now lasts ##1## additional second.",
+	"menu_deck8_5_short": "When you are within medium range of an enemy, you receive an additional ##8%## less damage from enemies. OVERDOG's effect now lasts ##1## additional second.",
+	
+	"menu_deck9_1": "No Talk",
+	"menu_deck9_1_desc": "When you are surrounded by three enemies or more, you receive ##12%## less damage from enemies.",
+	"menu_deck9_1_short": "When you are surrounded by three enemies or more, you receive ##12%## less damage from enemies.",
+	
+	"menu_deck15_1": "Unconscious",
+	"menu_deck15_1_desc": "Instead of regenerating your armor when away from combat, you regenerate ##30## armor every ##3## seconds.\n\nNote: Skills and perks that increase your armor recovery rate are disabled when using this perk deck.",
+	"menu_deck15_1_short": "Instead of regenerating your armor when away from combat, you regenerate ##30## armor every ##3## seconds. Note: Skills and perks that increase your armor recovery rate are disabled when using this perk deck.",
+	
+	"menu_deck15_3": "Mr. Cover Up",
+	"menu_deck15_3_desc" : "##50%## of your health is converted into ##100%## armor.\n\nKilling an enemy restores ##10%## of your stamina.\n\nThis can only occur every ##2## seconds.",
+	"menu_deck15_3_short" : "##50%## of your health is converted into ##100%## armor. Killing an enemy restores ##10%## of your stamina. - This can only occur every ##2## seconds.",
+	
+	"menu_deck15_5": "Bigger Faster Stronger",
+	"menu_deck15_5_desc" : "##50%## of your health is converted into ##110%## armor.\n\nCollecting ammo pickups restores ##20## armor.\n\nThis can only occur every ##2## seconds.",
+	"menu_deck15_5_short" : "##50%## of your health is converted into ##110%## armor. Collecting ammo pickups restores ##20## armor. - This can only occur every ##2## seconds.",
+	
+	"menu_deck15_7": "Black Raven",
+	"menu_deck15_7_desc" : "##50%## of your health is converted into ##120%## armor.\n\nKilling an enemy restores ##20## armor.\n\nThis can only occur every ##2## seconds.",
+	"menu_deck15_7_short" : "##50%## of your health is converted into ##120%## armor. Killing an enemy restores ##20## armor. - This can only occur every ##2## seconds.",
+	
+	"menu_deck15_9": "No-Operative",
+	"menu_deck15_9_desc" : "Dealing damage to an enemy restores ##20## armor.$NL;$NL;This can only occur once every ##2## seconds.$NL;$NL;Deck Completion Bonus: Your chance of getting a higher quality item during a Payday is increased by ##$multiperk3;##.",
+	"menu_deck15_9_short" : "Dealing damage to an enemy restores ##20## armor - this can only occur once every ##2## seconds.",
+	
+	"menu_deck19_1_desc" : "Unlocks and equips the Stoic Hip Flask.$NL;$NL;Changing to another perk deck will make the Stoic Hip Flask unavailable again. The Stoic Hip Flask replaces your current throwable, is equipped in your throwable slot and can be switched out if desired.$NL;$NL;Damage taken is now reduced by ##50%##. The remaining damage will be applied directly.$NL;$NL;The ##50%## reduced damage will be applied over-time (##12## seconds) instead.$NL;$NL;You can use the throwable key ##$BTN_ABILITY;## to activate the Stoic Hip Flask and immediately negate any pending damage. The flask has a ##$multiperk3;## second cooldown but time remaining will be lessened by 1 second per enemy killed.",
+	
+	"menu_deck19_1_short" : "Unlocks and equips the Stoic Hip Flask, replacing your current throwable. ##50%## of damage taken is applied over-time (##12## seconds) instead of instantly. The Stoic Hip Flask immediately negates any pending damage when used. The flask has a ##$multiperk3;## second cooldown, but time remaining will be lessened by 1 second per enemy killed.",
+	
+	"menu_deck19_5_desc": "After not taking damage for ##6## seconds, any pending damage-over-time will be negated.",
+	"menu_deck19_5_short": "After not taking damage for ##6## seconds, any pending damage-over-time will be negated.",
+	
+	"menu_deck19_9_desc" : "When damage-over-time is removed you will be healed for an additional ##25%## of the damage-over-time remaining at that point.$NL;$NL;Deck Completion Bonus: Your chance of getting a higher quality item during a Payday is increased by ##$multiperk2;##.",
+	"menu_deck19_9_short" : "When damage-over-time is removed you will be healed for an additional ##25%## of the damage-over-time remaining at that point.",
+	
+	"menu_deck23_7_desc" : "When your health gets below ##25%## you will be immune to health damage for ##2## seconds.$NL;This cannot occur more than once every ##20## seconds.",
+	
+	"menu_single_shot_ammo_return_beta": "Power Reload",
+	"menu_single_shot_ammo_return_beta_desc": "BASIC: ##$basic##\nWhen you are starting a reload while there are enemies within ##5## meters, you take ##75%## less damage for ##3## seconds.\n\nThis can only occur every ##10## seconds.\n\nACE: ##$pro##\nStarting a reload while there are enemies within ##5## meters will cause a shock explosion.\n\nThis can only occur every ##20## seconds.",
+	
+	"menu_sniper_graze_damage": "Graze",
+	"menu_sniper_graze_damage_desc": "BASIC: ##$basic##\nYour snipers deal ##25%## of the damage dealt in a ##100cm## radius of the bullet trajectory upon hitting an enemy.\n\nACE: ##$pro##\nIf the bullet kills an enemy with a headshot, the damage dealt by the sniper's bullet trajectory is increased to ##50%##.",
+
+	"menu_shotgun_impact_beta": "Cheney?",
+	"menu_shotgun_impact_beta_desc": "BASIC: ##$basic##\nYour shotguns deal ##15%## more damage.\n\nACE: ##$pro##\nYour weapon stability with shotguns is increased by ##8##.",
+	
+	"menu_far_away_beta": "Skeet Skeet",
+	"menu_far_away_beta_desc": "BASIC: ##$basic##\nYour shotguns gain ##25%## increased effective range when aiming down sights.\n\nACE: ##$pro##\nYour shotguns gain an additional ##25%## increased effective range when aiming down sights.",
+
+	"menu_close_by_beta": "Shell Shock",
+	"menu_close_by_beta_desc": "BASIC: ##$basic##\nYour shotguns gain ##+2## pellets when not firing slugs.\n\nACE: ##$pro##\nYour shotguns gain a ##25%## chance to not consume ammo when firing.",
+	
+	"menu_overkill_beta": "Cruel Trance",
+	"menu_overkill_beta_desc": "BASIC: ##$basic##\nKilling an enemy with a Shotgun or an OVE9000 Saw grants a ##50%## damage increase for ##7## seconds to all weapons.\n\nACE: ##$pro##\nWhile Cruel Trance is active, your weapons have an increasing chance to knock down Shield enemies except Captain Winters and his posse.\n\nYour guns' chance to knock down shields is based on the weapon damage.\n\nYou have up to a ##75%## base chance which increases by up to ##10%## for each failure to knock the shield down on weapons above or equal ##400## damage.",
+	
+	"menu_oppressor_beta": "Eye Protection",
+	"menu_oppressor_beta_desc": "BASIC: ##$basic##\nReduces the effect duration of flashbangs by ##25%##.\n\nACE: ##$pro##\nYou take ##10%## less health damage from all sources.",
+	
+	"menu_show_of_force_beta": "Balls of Steel",
+	"menu_show_of_force_beta_desc": "BASIC: ##$basic##\nYou take ##25%## less health damage against armor-piercing bullets that successfully pierce your armor.\n\nACE: ##$pro##\nYou take ##50%## less damage when performing interactions.",
+	
+	"menu_pack_mule_beta": "Hard Carry",
+	"menu_pack_mule_beta_desc": "BASIC: ##$basic##\nYou can throw bags ##50%## further.\n\nACE: ##$pro##\nFor each ##10## points of Armor you have, the current speed penalty for carrying a bag is reduced by ##1%##.\n\nYou can now sprint with any bag you are carrying, regardless of any speed penalty.",
+	
+	"menu_iron_man_beta": "Impact Dispersion",
+	"menu_iron_man_beta_desc": "BASIC: ##$basic##\nYour armor recovery rate is increased by ##10%##.\n\nACE: ##$pro##\nYour armor recovery rate is increased by an additional ##15%##.",
+
+	"menu_prison_wife_beta": "Jackpot",
+	"menu_prison_wife_beta_desc": "BASIC: ##$basic##\nYou relieve ##20%## of your suppression when landing a headshot. This effect cannot occur more than once every ##4## seconds.\n\nACE: ##$pro##\nYou regenerate ##30## armor when landing a headshot. This effect cannot occur more than once every ##4## seconds.",
+	
+	"menu_juggernaut_beta": "Big Guy",
+	"menu_juggernaut_beta_desc": "BASIC: ##$basic##\nUnlocks the ability to wear the Improved Combined Tactical Vest.\n\nACE: ##$pro##\nYou gain up to ##25%## increased total ammo capacity for your weapons based on which type of armor you wear.",
+
+	"menu_portable_saw_beta": "Industrial Grade",
+	"menu_portable_saw_beta_desc": "BASIC: ##$basic##\nWhile you are holding any OVE9000 saw, you take ##25%## less damage from enemy gunfire and ##50%## less damage from enemy melee attacks.\n\nACE: ##$pro##\nYour total ammo capacity for any OVE9000 saw is increased by ##100%##.",
+	
+	"menu_carbon_blade_beta": "Prime Cuts",
+	"menu_carbon_blade_beta_desc": "BASIC: ##$basic##\nYour OVE9000 saw blades consume ##50%## less charges when used against enemies, and you reload your saws ##50%## faster.\n\nACE: ##$pro##\nYou can now saw through enemy shields and body armor with your OVE9000 saws.\n\nYour weapon swap speed is increased by ##50%## when swapping to or from a saw.",
+	
+	"menu_steady_grip_beta": "Aggressor",
+	"menu_steady_grip_beta_desc": "BASIC: ##$basic##\nThe threat rating on your weapons is increased by ##5%##.\n\nACE: ##$pro##\nThe threat rating on your weapons is now increased by ##15%##.",
+	
+	"menu_fire_control_beta": "Steady Grip",
+	"menu_fire_control_beta_desc": "BASIC: ##$basic##\nYou gain ##4## weapon accuracy.\n\nACE: ##$pro##\nYou gain an additional ##4## weapon accuracy.",
+	
+	"menu_heavy_impact_beta": "Crippling Shot",
+	"menu_heavy_impact_beta_desc": "BASIC: ##$basic##\nYour shots gain a ##15%## chance to stagger all enemies except Bulldozers and Captain Winters.\n\nACE: ##$pro##\nYou deal ##15%## more damage against staggered enemies.",
+	
+	"menu_shock_and_awe_beta": "Automaster",
+	"menu_shock_and_awe_beta_desc": "BASIC: ##$basic##\nThe stability rating of your weapons is increased by ##5%##.\n\nACE: ##$pro##\nThe stability rating of your weapons is now increased by ##10%##.",
+	
+	"menu_fast_fire_beta": "Running Hot",
+	"menu_fast_fire_beta_desc": "BASIC: ##$basic##\nYour SMGs, LMGs, Assault Rifles or Special Weapons set to automatic fire have a ##15%## chance to set an enemy on fire when dealing damage.\n\nACE: ##$pro##\nRunning Hot's effect is now guaranteed on the final bullet of the magazine.",
+	
+	"menu_body_expertise_beta": "Lock 'N Load",
+	"menu_body_expertise_beta_desc": "BASIC: ##$basic##\nKilling ##2## enemies with SMGs, LMGs, Assault Rifles or Special Weapons set to automatic fire will increase your next reload's speed by up to ##100%##. This bonus is reduced by ##1%## for each bullet above ##20## in the total magazine size, down to a minimum bonus of ##30%## reload speed increase.\n\nACE: ##$pro##\nThe minimum reload speed bonus is increased to ##60%##, reduced by ##0.5%## for each bullet above ##50##.",
+	
+	"menu_chameleon_beta": "Premonition",
+	"menu_chameleon_beta_desc": "BASIC: ##$basic##\nYou gain the ability to automatically mark enemies within a ##10## meter radius around you after crouching and not moving for ##3.5## seconds while in stealth.\n\nACE: ##$pro##\nWhile in loud, crouching and not moving for ##3.5## seconds will mark any special enemies within ##15## meters.",
+	
+	"menu_sprinter_beta": "Bob And Weave",
+	"menu_sprinter_beta_desc": "BASIC: ##$basic##\nYour stamina starts regenerating ##25%## earlier and regenerates ##25%## faster.\n\nACE: ##$pro##\nYou gain ##10%## Dodge Chance while sprinting. You gain ##15%## Dodge Chance while ziplining.",
+	
+	"menu_awareness_beta": "Run 'N Gun",
+	"menu_awareness_beta_desc": "BASIC: ##$basic##\nYou can now reload your weapons while sprinting.\n\nACE: ##$pro##\nYou can now fire your weapons while sprinting.",
+	
+	"menu_thick_skin_beta": "Deep Cover",
+	"menu_thick_skin_beta_desc": "BASIC: ##$basic##\nYour weapon swap speed is increased by ##15%##.\n\nACE: ##$pro##\nYour armor movement penalty is reduced by ##10%##.",
+	
+	"menu_insulation_beta": "The Rubber",
+	"menu_insulation_beta_desc": "BASIC: ##$basic##\nYou can now walk around while being tased, albeit with a ##80%## speed penalty and no sprinting.\n\nACE: ##$pro##\nWhen you are being tased, you no longer uncontrollably fire your guns.",
+
+	"menu_jail_diet_beta": "Mad Swift",
+	"menu_jail_diet_beta_desc": "BASIC: ##$basic##\nYou gain ##5%## Dodge Chance.\n\nWhenever a dodge fails, re-roll for your current ##Dodge## chance to reduce taken damage from the attack by ##50%##.\n\nACE: ##$pro##\nYou gain an additional ##5%## Dodge Chance.",
+	
+	"menu_silence_expert_beta": "The Professional",
+	"menu_silence_expert_beta_desc": "BASIC: ##$basic##\nYou gain ##+8## weapon stability and ##100%## increased steelsight speed with silenced weapons.\n\nACE: ##$pro##\nYou gain ##+12## weapon accuracy with silenced weapons.",
+	
+	"menu_silencer_falloff": "Reaper's Reach",
+	"menu_silencer_falloff_desc": "BASIC: ##$basic##\nYour weapons equipped with silencers have their optimal range increased by ##30%##.\n\nACE: ##$pro##\nYour weapons equipped with silencers' damage penalty when firing from non-optimal ranges is reduced by ##50%##.",
+	
+	"menu_spotter_teamwork_beta": "High Value Target",
+	"menu_spotter_teamwork_beta_desc": "BASIC: ##$basic##\nEnemies that you mark take ##15%## more damage.\n\nACE: ##$pro##\nEnemies that you mark also take an additional ##15%## damage when further away than ##7## meters from their attacker.\n\nEnemies that you mark stay marked ##100%## longer and you can now mark specials by aiming at them with any weapon.",
+	
+	"menu_optic_illusions": "Neutralizer",
+	"menu_optic_illusions_desc": "BASIC: ##$basic##\nYou deal ##15%## extra damage against Special Enemies.\n\nACE: ##$pro##\nYou gain ##1## concealment for each silenced weapon you equip.\n\nThe concealment penalty of silencers is reduced by ##2##.",
+	
+	"menu_backstab_beta": "Natural 20s",
+	"menu_backstab_beta_desc": "BASIC: ##$basic##\nYou gain ##15%## Crit Chance.\n\nCrit Chance is doubled when attacking targets further than ##15 meters##.\n\nACE: ##$pro##\nYou gain an additional ##10%## Crit Chance.\n\nAttacking targets from behind will now guarantee a Critical Hit.\n\n##Critical hits deal 4x the usual weapon damage.##",
+	
+	"menu_dance_instructor": "Light Triggers",
+	"menu_dance_instructor_desc": "BASIC: ##$basic##\nYour rate of fire with pistols and revolvers is increased by ##25%##.\n\nYour pistols and revolvers' threat rating is increased by ##25%##.\n\nACE: ##$pro##\nYour rate of fire with pistols and revolvers is increased by an additional ##25%##.",
+	
+	"menu_akimbo_skill_beta": "One In Each Hand",
+	"menu_akimbo_skill_beta_desc" : "BASIC: ##$basic;##$NL;Your Akimbo weapons have ##+4## stability.$NL;$NL;ACE: ##$pro;##$NL;Your akimbo weapons have an additional ##+4## stability and they also have ##50%## increased ammo capacity.",
+	
+	"menu_nine_lives_beta": "Heaven's Door",
+	"menu_nine_lives_beta_desc": "BASIC: ##$basic##\nYou gain a ##460%## increase to bleedout health.\n\nACE: ##$pro##\nYou gain infinite bleedout health.",
+	
+	"menu_running_from_death_beta": "Jump Around",
+	"menu_running_from_death_beta_desc": "BASIC: ##$basic##\nYou swap weapons ##100%## faster after being revived or freed from handcuffs for ##10## seconds.\n\nIn addition, both of your weapons' magazines are instantly reloaded from reserves upon being revived or freed from handcuffs.\n\nACE: ##$pro##\nYou move ##30%## faster for ##10## seconds after being revived or freed from handcuffs.",
+	
+	"menu_up_you_go_beta": "Back In Black",
+	"menu_up_you_go_beta_desc": "BASIC: ##$basic##\nYou receive ##40%## more health after being revived.\n\nYou take ##30%## less damage for ##10## seconds upon being revived or freed from handcuffs.\n\nACE: ##$pro##\nYou become invulnerable to all damage for ##1.5## seconds after being revived or freed from handcuffs.",
+
+	"menu_perseverance_beta": "Still Standing",
+	"menu_perseverance_beta_desc": "BASIC: ##$basic##\nInstead of getting downed instantly, you gain the ability to keep on fighting for ##3## seconds with a ##60%## movement penalty before going down.\n\nACE: ##$pro##\nIncreases the duration of Still Standing by ##3## seconds.",
+	
+	"menu_feign_death": "Barracuda",
+	"menu_feign_death_desc": "BASIC: ##$basic##\nUpon getting downed, you have a ##15%## to be able to revive yourself on a whim.\n\nACE: ##$pro##\nThe chance of Barracuda's effect activating is increased to ##30%##.",
+	
+	"menu_pistol_beta_messiah": "Stayin' Alive",
+	"menu_pistol_beta_messiah_desc": "BASIC: ##$basic##\nOnce per heist, you can revive yourself if you kill an enemy while in bleedout.\n\nACE: ##$pro##\nYou gain the ability to get downed ##1## more time before going into custody.",
+	
+	"menu_bloodthirst": "Bloodthirst",
+	"menu_bloodthirst_desc": "BASIC: ##$basic##\nEvery kill you get will increase your next melee attack damage by ##25%##, up to a maximum of ##400%##.\n\nThis effect gets reset when you kill an enemy with a melee attack.\n\nACE: ##$pro##\nWhenever you kill an enemy with a melee attack, you will gain a ##50%## increase in reload speed for ##10## seconds.",
+	
+	"menu_steroids_beta": "Swing Rhythm",
+	"menu_steroids_beta_desc": "BASIC: ##$basic##\nYour melee attacks are ##15%## faster.\n\nACE: ##$pro##\nYour melee weapons with charge time charge ##100%## faster.",
+	
+	"menu_drop_soap_beta": "Counter Hit",
+	"menu_drop_soap_beta_desc": "BASIC: ##$basic##\nYour melee weapons with auto-counter can now counter enemies without looking at them.\n\nThe auto-counter will still only deal damage to enemies in front of you.\n\nACE: ##$pro##\nYour melee weapons with the auto-counter can now counter Cloaker kicks.",
+
+	"menu_wolverine_beta": "The Fury",
+	"menu_wolverine_beta_desc": "BASIC: ##$basic##\nThe lower your health, the more damage you do.\nWhen your health is below ##100%##, you will do up to ##250%## more melee and saw damage.\n\nACE: ##$pro##\nWhen your health is below ##100%##, you will do up to ##100%## more damage with ranged weapons as well.",
+	
+	"menu_frenzy": "Exsanguinate",
+	"menu_frenzy_desc": "BASIC: ##$basic##\nYou start the heist with only ##50%## of your maximum armor and health and you cannot regenerate or heal above that point, but dealing damage to enemies within ##5## meters heals you for ##25%## of the damage dealt.\n\nHealing received by other sources is reduced by ##70%##.\n\nACE: ##$pro##\nAmmo pickups now also regenerate your health by ##1%## per pickup.",
+}
