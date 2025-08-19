@@ -154,3 +154,297 @@ function CopActionWalk:on_attention(attention)
 		self._attention_pos = false
 	end
 end
+
+function CopActionWalk:stop()
+	local is_initialized = self._init_called
+
+	if not is_initialized then
+		self._simplified_path = self._simplified_path or {}
+	end
+
+	local s_path = self._simplified_path
+
+	if s_path[#s_path] and not s_path[#s_path].x then
+		s_path[#s_path] = self._nav_point_pos(s_path[#s_path])
+	end
+
+	local pos = s_path[#s_path]
+	self._persistent = false
+
+	if is_initialized then
+		if self.update == self._upd_wait or self.update == self._upd_start_anim_first_frame or self.update == self._upd_start_anim then
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+		elseif not self._next_is_nav_link then
+			self._end_of_curved_path = nil
+		end
+	end
+
+	if is_initialized and #s_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
+		if self:_husk_needs_speedup() then
+			self._next_is_nav_link = nil
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+			self._walk_turn = nil
+			self._curve_path_index = 1
+			local stop_pos = mvec3_cpy(pos)
+			self._curve_path = {
+				mvec3_cpy(stop_pos),
+				stop_pos
+			}
+			self._simplified_path = {
+				mvec3_cpy(stop_pos),
+				stop_pos
+			}
+		end
+	end
+
+	local ray_params = {
+		pos_to = pos
+	}
+
+	for i_nav_point = 2, #self._simplified_path - 1 do
+		ray_params.pos_from = CopActionWalk._nav_point_pos(self._simplified_path[i_nav_point])
+
+		if not managers.navigation:raycast(ray_params) then
+			local nr_points_to_remove = #self._simplified_path - 1 - i_nav_point
+
+			for i = 1, nr_points_to_remove do
+				table.remove(self._simplified_path, i_nav_point + 1)
+			end
+
+			break
+		end
+	end
+end
+
+function CopActionWalk:_upd_wait_for_full_blend(t)
+	if self._ext_anim.needs_idle and not self._ext_anim.to_idle then
+		local res = self._ext_movement:play_redirect("exit")
+		res = res or self._ext_movement:play_redirect("idle")
+
+		if not res then
+			debug_pause_unit(self._unit, "[CopActionWalk:_upd_wait_for_full_blend] idle redirect failed in", self._machine:segment_state(idstr_base), self._unit)
+
+			return
+		end
+
+		self._ext_movement:spawn_wanted_items()
+	end
+
+	if not self._ext_anim.to_idle and self._ext_anim.idle_full_blend then
+		self._waiting_full_blend = nil
+
+		if self:_init() then
+			self._ext_movement:drop_held_items()
+
+			if self.update == self._upd_wait_for_full_blend then
+				self:_set_updator(nil)
+			end
+		else
+			if self._sync then
+				--self._ext_network:send("action_walk_nav_point", mvec3_cpy(self._ext_movement:m_pos()))
+				self._ext_movement:action_request({
+					body_part = 2,
+					type = "idle"
+				})
+			end
+
+			return
+		end
+	else
+		self._unit:m_rotation(temp_rot1)
+		self._unit:m_position(tmp_vec1)
+		self._ext_movement:set_m_rot(temp_rot1)
+		self._ext_movement:set_m_pos(tmp_vec1)
+	end
+end
+
+function CopActionWalk:_upd_nav_link(t)
+	if self._ext_anim.act and not self._ext_anim.walk then
+		self._last_pos = self._unit:position()
+
+		self._unit:m_rotation(temp_rot1)
+		self._ext_movement:set_m_rot(temp_rot1)
+		self._ext_movement:set_m_pos(self._last_pos)
+	elseif self._simplified_path[2] then
+		self._common_data.unit:set_driving("script")
+
+		self._changed_driving = nil
+		self._simplified_path[1] = mvec3_cpy(self._common_data.pos)
+
+		if self._sync then
+			local ray_params = {
+				tracker_from = self._common_data.nav_tracker,
+				pos_to = self._nav_point_pos(self._simplified_path[2])
+			}
+			local res = managers.navigation:raycast(ray_params)
+
+			if res then
+				local end_pos = self._nav_link.c_class:end_position()
+
+				table.insert(self._simplified_path, 2, end_pos)
+
+				self._next_is_nav_link = nil
+			end
+
+			--self:_send_nav_point(self._simplified_path[2])
+
+			if self._nav_link.element:nav_link_delay() > 0 then
+				self._nav_link.c_class:set_delay_time(0)
+			end
+		end
+
+		if mvec3_dis(self._simplified_path[1], self._nav_point_pos(self._simplified_path[2])) > 400 and self._ext_base:lod_stage() == 1 then
+			self._curve_path = self:_calculate_curved_path(self._simplified_path, 1, 1, self._common_data.fwd)
+		else
+			self._curve_path = {
+				mvec3_cpy(self._simplified_path[1]),
+				self._nav_point_pos(self._simplified_path[2])
+			}
+		end
+
+		self._curve_path_index = 1
+
+		if self._nav_link_invul_on then
+			self._nav_link_invul_on = nil
+
+			self._common_data.ext_damage:set_invulnerable(false)
+		end
+
+		self._nav_link = nil
+		self._cur_vel = 0
+		self._last_vel_z = 0
+
+		self:_set_blocks(self._old_blocks)
+
+		self._old_blocks = nil
+
+		self:_set_updator(nil)
+		self:_chk_correct_pose()
+		self:update(t)
+	elseif not self._persistent then
+		self._simplified_path[1] = mvec3_cpy(self._common_data.pos)
+
+		self._common_data.unit:set_driving("script")
+
+		self._changed_driving = nil
+		self._end_of_curved_path = true
+
+		if self._nav_link_invul_on then
+			self._nav_link_invul_on = nil
+
+			self._common_data.ext_damage:set_invulnerable(false)
+		end
+
+		if self._sync and self._nav_link.element:nav_link_delay() > 0 then
+			self._nav_link.c_class:set_delay_time(0)
+		end
+
+		self._nav_link = nil
+		self._cur_vel = 0
+		self._last_vel_z = 0
+
+		self:_set_blocks(self._old_blocks)
+
+		self._old_blocks = nil
+
+		self:_chk_correct_pose()
+
+		self._expired = true
+
+		if self._end_rot then
+			self._ext_movement:set_rotation(self._end_rot)
+		end
+	end
+end
+
+function CopActionWalk:_calculate_curved_path(path, index, curvature_factor, enter_dir)
+	local p1 = self._nav_point_pos(path[index])
+	local p4 = self._nav_point_pos(path[index + 1])
+	
+	local curvey = {
+		mvec3_cpy(p1),
+		mvec3_cpy(p4)
+	}
+	
+	return curvey
+end
+
+function CopActionWalk:_chk_falling_behind()
+	if not self._persistent then
+		return true
+	end
+
+	if #self._simplified_path > 2 then
+		local sz_path = #self._simplified_path
+		local prev_pos = self._common_data.pos
+		local i = 2
+		local dis_error_total = 0
+
+		while i <= sz_path do
+			local next_pos = self._nav_point_pos(self._simplified_path[i])
+			dis_error_total = dis_error_total + mvec3_dis_sq(prev_pos, next_pos)
+			prev_pos = next_pos
+			i = i + 1
+		end
+
+		if dis_error_total > 90000 then
+			return true
+		end
+	end
+end
+
+function CopActionWalk:_husk_needs_speedup()
+	if Network:is_server() or Global.game_settings.single_player then
+		return
+	end
+
+	if self._was_interrupted then
+		return true
+	end
+	
+	if self._ext_movement._queued_actions and next(self._ext_movement._queued_actions) then
+		local queued_actions = self._ext_movement._queued_actions
+		for i = #queued_actions, 1, -1 do
+			if queued_actions.body_part == 1 then
+				return true
+			end
+			
+			if queued_actions[i].type == "walk" then
+				if queued_actions[i].persistent then
+					if mvec3_dis(self._nav_point_pos(queued_actions[i].nav_path[#queued_actions[i].nav_path]), self._nav_point_pos(self._simplified_path[#self._simplified_path])) > 500 then
+						return true
+					end
+				else
+					return true
+				end
+			end
+		end
+	end
+end
+
+function CopActionWalk:_get_current_max_walk_speed(move_dir)
+	move_dir = self._move_dir_convert[move_dir] or move_dir
+	local pose = self._ext_anim.pose or self._fallback_pose
+	local speed = self._common_data.char_tweak.move_speed[pose][self._haste][self._stance.name][move_dir]
+	local speed_modifier = self._ext_movement:speed_modifier()
+
+	if speed_modifier then
+		speed = speed * speed_modifier
+	end
+
+	local is_host = Network:is_server() or Global.game_settings.single_player
+
+	if not is_host then
+		if self:_husk_needs_speedup() or self:_chk_falling_behind() then
+			local lod = self._ext_base:lod_stage()
+			local lod_multiplier = 1 + (Unit.occluded(self._unit) and 1 or CopActionWalk.lod_multipliers[lod] or 1)
+			speed = speed * lod_multiplier
+		elseif not managers.groupai:state():enemy_weapons_hot() then
+			speed = speed * tweak_data.network.stealth_speed_boost
+		end
+	end
+
+	return speed
+end

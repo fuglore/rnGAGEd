@@ -1,4 +1,19 @@
 if RNGAGED.settings.disable_balance_changes then
+	local max_health_orig = PlayerDamage._max_health
+	
+	function PlayerDamage:_max_health()
+		local max_health = max_health_orig(self)
+
+		if managers.player:has_category_upgrade("player", "sandy_armor_to_health") then
+			local max_armor = self:_raw_max_armor()
+			local to_add = max_armor - managers.player:upgrade_value("player", "sandy_armor_to_health")
+			max_health = max_health + to_add
+		end
+
+		return max_health
+	end
+	
+
 	return
 end
 
