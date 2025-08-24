@@ -155,6 +155,62 @@ function CopActionWalk:on_attention(attention)
 	end
 end
 
+function CopActionWalk:append_nav_point(nav_point)
+	if not nav_point.x then
+		function nav_point.element.value(element, name)
+			return element[name]
+		end
+
+		function nav_point.element.nav_link_wants_align_pos(element)
+			return element.from_idle
+		end
+	end
+
+	local is_initialized = self._init_called
+
+	if not is_initialized then
+		self._simplified_path = self._simplified_path or {}
+	end
+
+	table.insert(self._simplified_path, nav_point)
+	
+	if is_initialized and #self._simplified_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
+		local ray_params = {
+			tracker_from = self._common_data.nav_tracker,
+			pos_to = self._nav_point_pos(nav_point)
+		}
+		
+		if not managers.navigation:raycast(ray_params) then
+			self._next_is_nav_link = nil
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+			self._walk_turn = nil
+			self._curve_path_index = 1
+			self._curve_path = {
+				mvec3_cpy(self._common_data.pos),
+				self._nav_point_pos(nav_point)
+			}
+			self._simplified_path = {
+				mvec3_cpy(self._common_data.pos),
+				nav_point
+			}
+		end
+	end
+
+	if is_initialized and #self._simplified_path == 2 and not nav_point.x then
+		self._next_is_nav_link = nav_point
+	end
+
+	if is_initialized then
+		if self.update == self._upd_wait or self.update == self._upd_start_anim_first_frame or self.update == self._upd_start_anim then
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+		elseif not self._next_is_nav_link then
+			self._end_of_curved_path = nil
+		end
+	end
+end
+
 function CopActionWalk:stop()
 	local is_initialized = self._init_called
 
@@ -196,24 +252,6 @@ function CopActionWalk:stop()
 				mvec3_cpy(stop_pos),
 				stop_pos
 			}
-		end
-	end
-
-	local ray_params = {
-		pos_to = pos
-	}
-
-	for i_nav_point = 2, #self._simplified_path - 1 do
-		ray_params.pos_from = CopActionWalk._nav_point_pos(self._simplified_path[i_nav_point])
-
-		if not managers.navigation:raycast(ray_params) then
-			local nr_points_to_remove = #self._simplified_path - 1 - i_nav_point
-
-			for i = 1, nr_points_to_remove do
-				table.remove(self._simplified_path, i_nav_point + 1)
-			end
-
-			break
 		end
 	end
 end
@@ -293,6 +331,18 @@ function CopActionWalk:_upd_nav_link(t)
 			if self._nav_link.element:nav_link_delay() > 0 then
 				self._nav_link.c_class:set_delay_time(0)
 			end
+		elseif #self._simplified_path > 2 then
+			local ray_params = {
+				tracker_from = self._common_data.nav_tracker,
+				pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			if not managers.navigation:raycast(ray_params) then
+				self._simplified_path = {
+					mvec3_cpy(self._common_data.pos),
+					self._simplified_path[#self._simplified_path]
+				}
+			end
 		end
 
 		if mvec3_dis(self._simplified_path[1], self._nav_point_pos(self._simplified_path[2])) > 400 and self._ext_base:lod_stage() == 1 then
@@ -357,18 +407,6 @@ function CopActionWalk:_upd_nav_link(t)
 			self._ext_movement:set_rotation(self._end_rot)
 		end
 	end
-end
-
-function CopActionWalk:_calculate_curved_path(path, index, curvature_factor, enter_dir)
-	local p1 = self._nav_point_pos(path[index])
-	local p4 = self._nav_point_pos(path[index + 1])
-	
-	local curvey = {
-		mvec3_cpy(p1),
-		mvec3_cpy(p4)
-	}
-	
-	return curvey
 end
 
 function CopActionWalk:_chk_falling_behind()

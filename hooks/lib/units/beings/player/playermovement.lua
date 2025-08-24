@@ -13,7 +13,7 @@ function PlayerMovement:change_state(name)
 		exit_data = self._current_state:exit(self._state_data, name)
 	end
 	
-	local cur_vel, jump_vel, last_step_pos, true_headbob, headbob_target, freefall_sound_instance, dash_t, dashing, peek_from_cover, fwd_ray
+	local cur_vel, jump_vel, last_step_pos, true_headbob, headbob_target, freefall_sound_instance, dash_t, dashing, peek_from_cover, fwd_ray, jump_t
 	local t = managers.player:player_timer():time()
 	local dt = managers.player:player_timer():delta_time()
 	
@@ -52,6 +52,10 @@ function PlayerMovement:change_state(name)
 			
 			if self._current_state._jump_vel_xy then
 				jump_vel = mvector3.copy(self._current_state._jump_vel_xy)
+			end
+			
+			if self._current_state._jump_t then
+				jump_t = self._current_state._jump_t
 			end
 			
 			if self._current_state._last_step_pos then
@@ -102,6 +106,10 @@ function PlayerMovement:change_state(name)
 			
 			if jump_vel then
 				self._current_state._jump_vel_xy = jump_vel
+			end
+			
+			if jump_t then
+				self._current_state._jump_t = jump_t
 			end
 			
 			if last_step_pos then
@@ -216,25 +224,28 @@ function PlayerMovement:on_SPOOCed(enemy_unit)
 		managers.achievment:award(tweak_data.achievement.finally.award)
 		
 		local char_damage = self._unit:character_damage()
-		
-		char_damage:change_health(-2)
-		
-		if char_damage:get_real_health() == 0 then
-			char_damage._incapacitated = nil
-			char_damage._hard_incapacitated = true
-			
-			char_damage._revives = Application:digest_value(Application:digest_value(char_damage._revives, false) - 1, true)
 
-			char_damage:_send_set_revives()
+		if char_damage:get_real_health() >= 0 then
+			char_damage:change_health(-2)
 			
-			managers.environment_controller:set_last_life(Application:digest_value(char_damage._revives, false) <= 1)
-			
-			if Application:digest_value(char_damage._revives, false) <= 0 then
-				char_damage._down_time = 0
-				char_damage._downed_timer = 0
+			if char_damage:get_real_health() <= 0 then
+				char_damage._incapacitated = nil
+				char_damage._hard_incapacitated = true
+				
+				char_damage._revives = Application:digest_value(Application:digest_value(char_damage._revives, false) - 1, true)
+
+				char_damage:_send_set_revives()
+				
+				managers.environment_controller:set_last_life(Application:digest_value(char_damage._revives, false) <= 1)
+				
+				if Application:digest_value(char_damage._revives, false) <= 0 then
+					char_damage._down_time = 0
+					char_damage._downed_timer = 0
+					char_damage._downed_paused_counter = 0
+				end
+				
+				return true
 			end
-			
-			return true
 		end
 
 		return true

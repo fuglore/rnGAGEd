@@ -188,3 +188,7 @@ function ActionSpooc:_upd_strike_first_frame(t)
 
 	self:_set_updator("_upd_striking")
 end
+
+function ActionSpooc:_chk_falling_behind()
+	return false
+end
