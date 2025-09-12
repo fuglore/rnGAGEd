@@ -427,6 +427,12 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.msr.stats.spread = 25
 	self.msr.stats.recoil = 10
 	
+	--grom, damage increase to higher tier
+	self.siltstone.stats.damage = 123
+	self.siltstone.stats_modifiers = {
+		damage = 2
+	}
+	
 	--repeater, stability buff
 	self.winchester1874.stats.recoil = 10
 	

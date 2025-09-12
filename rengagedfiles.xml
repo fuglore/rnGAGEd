@@ -13,7 +13,10 @@
 	<texture path="guis/dlcs/pd2_mod_rgg/textures/pd2/blackmarket/icons/grenades/sandy_tuner"/>
 	<texture path="guis/dlcs/pd2_mod_rgg/textures/pd2/blackmarket/icons/grenades/outline/sandy_tuner"/>
 	<texture path="guis/dlcs/pd2_mod_rgg/textures/pd2/specialization/icons_atlas"/>
-
+	
+	<texture path="units/payday2/weapons/wpn_effects_textures/vr_crosshair_vr_lens_color_df"/>
+	<texture path="units/pd2_dlc_gage_jobs/weapons/wpn_fps_upg_o_cs/red_glass_df"/>
+	<texture path="units/pd2_dlc_gage_jobs/weapons/wpn_fps_upg_o_cs/red_glass_effect_df"/>
 	<!--NPC Stuff go here-->
 
 </table>
