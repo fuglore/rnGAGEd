@@ -523,6 +523,10 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--compact-5, damage buff
 	self.new_mp5.stats.damage = 50
 	
+	--signature smg, massive stat buffs
+	self.shepheard.stats.recoil = 16
+	self.shepheard.stats.spread = 19
+	
 	--CMP, accuracy boost, stability buff, max ammo buff
 	--self.mp9.NR_CLIPS_MAX = 9
 	--self.mp9.AMMO_MAX = self.mp9.CLIP_AMMO_MAX * self.mp9.NR_CLIPS_MAX
@@ -536,6 +540,12 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--para, max ammo increase
 	--self.olympic.NR_CLIPS_MAX = 11
 	--self.olympic.AMMO_MAX = self.olympic.CLIP_AMMO_MAX * self.olympic.NR_CLIPS_MAX
+	
+	--cobra submachine gun, accuracy adjustment
+	self.scorpion.stats.spread = 14
+	
+	--blaster 9mm, accuracy adjustment
+	self.tec9.stats.spread = 10
 	
 	--jacket's piece, threat buff, damage buff, accuracy reduced
 	self.cobray.stats.damage = 66

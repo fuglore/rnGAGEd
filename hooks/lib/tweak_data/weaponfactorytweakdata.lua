@@ -283,6 +283,9 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 
 	self.parts.wpn_fps_upg_ass_m4_fg_moe.stats.recoil = -1
 	
+	self.parts.wpn_fps_upg_ass_m16_fg_stag.stats.spread = 1
+	self.parts.wpn_fps_upg_ass_m16_fg_stag.stats.recoil = 1
+	
 	--m4 mags	
 	self.parts.wpn_fps_m4_uupg_m_std.stats.concealment = -2
 	self.parts.wpn_fps_upg_m4_m_pmag.stats.suppression = -1
@@ -349,6 +352,11 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 	
 	self.parts.wpn_fps_upg_ak_g_rk9.stats.concealment = -2
 	self.parts.wpn_fps_upg_ak_g_rk9.stats.suppression = -1
+	
+	--cobra submachine gun
+	self.parts.wpn_fps_smg_scorpion_s_unfolded.stats.spread = 1
+	self.parts.wpn_fps_smg_scorpion_m_extended.stats.extra_ammo = nil
+	self.parts.wpn_fps_smg_scorpion_m_extended.stats.total_ammo_mod = 5
 	
 	--optics
 	self.parts.wpn_fps_upg_o_health.stats = {
