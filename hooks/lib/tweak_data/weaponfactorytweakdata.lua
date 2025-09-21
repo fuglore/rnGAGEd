@@ -31,7 +31,12 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 	--ammo pouches/racks
 	self.parts.wpn_fps_shot_b682_s_ammopouch.stats.total_ammo_mod = 5
 	self.parts.wpn_fps_sho_ultima_body_rack.stats.total_ammo_mod = 5
+
+	--m308 abraham body downside
+	self.parts.wpn_fps_ass_m14_body_ebr.stats.spread = -1
 	
+	--m308 b-team body concealment nerf
+	self.parts.wpn_fps_ass_m14_body_ruger.stats.concealment = 10
 
 	for k, v in pairs(self.parts) do
 		if not saw_parts[k] and v.stats and not v.regunned then
@@ -58,8 +63,10 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 				perfect_concealment = nil
 			end
 			
-			if v.stats.extra_ammo and v.stats.extra_ammo > 0 and perfect_concealment or v.stats.total_ammo_mod and v.stats.total_ammo_mod > 0 and perfect_concealment then
-				v.stats.concealment = -1
+			if not downsides then
+				if v.stats.extra_ammo and v.stats.extra_ammo > 0 and perfect_concealment or v.stats.total_ammo_mod and v.stats.total_ammo_mod > 0 and perfect_concealment then
+					v.stats.concealment = -1
+				end
 			end
 		end
 	end

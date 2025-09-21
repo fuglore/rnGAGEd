@@ -300,6 +300,9 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.amcar.stats.damage = 62
 	self.amcar.stats.concealment = 24
 	
+	--m308, concealment buff
+	self.new_m14.stats.concealment = 15
+	
 	--UAR, stability buff, threat buff
 	self.aug.stats.recoil = 18
 	self.aug.stats.suppression = 12
