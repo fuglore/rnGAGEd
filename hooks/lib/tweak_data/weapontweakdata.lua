@@ -311,6 +311,9 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	
 	--commando 553, accuracy boost
 	self.s552.stats.spread = 14
+	
+	--falcon rifle, concealment increase
+	self.fal.stats.concealment = 14
 
 	--queen's wrath, accuracy boost, max ammo buff
 	self.l85a2.stats.spread = 19

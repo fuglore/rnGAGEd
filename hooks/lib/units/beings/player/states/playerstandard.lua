@@ -2776,3 +2776,7 @@ function PlayerStandard:_check_action_primary_attack(t, input, params)
 
 	return new_action
 end
+
+function PlayerStandard:get_fire_weapon_position()
+	return self._ext_camera:position_with_shake()
+end

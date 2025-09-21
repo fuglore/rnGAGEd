@@ -476,7 +476,7 @@ function CopActionShoot:_get_target_pos(shoot_from_pos, attention, t)
 	
 	target_dis = mvector3.distance(shoot_from_pos, target_pos)
 
-	if self._shooting_player and attention.unit and not RNGAGED.settings.disable_enemy_projectiles then	
+	if self._shooting_player and attention.unit and not RNGAGED.settings.disable_enemy_projectiles and target_dis < self._bullet_travel_speed then	
 		local sampled_velocity = attention.unit:sampled_velocity()	
 		mvec3_set_z(sampled_velocity, 0)
 		

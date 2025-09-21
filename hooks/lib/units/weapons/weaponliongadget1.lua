@@ -58,7 +58,7 @@ function WeaponLionGadget1:_shoot_bipod_rays(debug_draw)
 	mvector3.rotate_with(to, Rotation(mvec_look_dir, 120))
 	mvector3.add(to, from)
 
-	local ray_bipod_left = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "sphere_cast_radius", 2.5)
+	local ray_bipod_left = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "ray_type", "walk -mover", "sphere_cast_radius", 2.5)
 
 	if not debug_draw then
 		self._left_ray_from = Vector3(from.x, from.y, from.z)
@@ -82,7 +82,7 @@ function WeaponLionGadget1:_shoot_bipod_rays(debug_draw)
 	mvector3.rotate_with(to, Rotation(mvec_look_dir, 60))
 	mvector3.add(to, from)
 
-	local ray_bipod_right = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "sphere_cast_radius", 2.5)
+	local ray_bipod_right = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "ray_type", "walk -mover", "sphere_cast_radius", 2.5)
 
 	if not debug_draw then
 		self._right_ray_from = Vector3(from.x, from.y, from.z)
@@ -106,7 +106,7 @@ function WeaponLionGadget1:_shoot_bipod_rays(debug_draw)
 	mvector3.rotate_with(to, Rotation(mvec_look_dir, 90))
 	mvector3.add(to, from)
 
-	local ray_bipod_center = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "sphere_cast_radius", 2.5)
+	local ray_bipod_center = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "ray_type", "walk -mover", "sphere_cast_radius", 2.5)
 
 	if not debug_draw then
 		self._center_ray_from = Vector3(from.x, from.y, from.z)
@@ -132,7 +132,7 @@ function WeaponLionGadget1:_shoot_bipod_rays(debug_draw)
 	mvector3.multiply(to, 200)
 	mvector3.add(to, from)
 
-	local ray_bipod_forward = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "sphere_cast_radius", 2.5)
+	local ray_bipod_forward = self._unit:raycast("ray", from, to, "slot_mask", slotmask, "ray_type", "walk -mover", "sphere_cast_radius", 2.5)
 
 	if debug_draw then
 		local color = ray_bipod_forward and {

@@ -20,7 +20,6 @@
 			<light per_particle_age="false" shadow_caster="false" specular="true" color_input="constant" color="255 234.00001525879 168" multiplier_input="keys" far_range_input="constant" far_range="150">
                 <multiplier_keys loop="true">
                     <key t="0" v="0.0040000001899898"/>
-                    <key t="0.2" v="0"/>
                     <key t="0.4" v="0.0049999998882413"/>
                 </multiplier_keys>
             </light>

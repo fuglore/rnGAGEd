@@ -358,6 +358,16 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 	self.parts.wpn_fps_smg_scorpion_m_extended.stats.extra_ammo = nil
 	self.parts.wpn_fps_smg_scorpion_m_extended.stats.total_ammo_mod = 5
 	
+	--falcon rifles
+	self.parts.wpn_fps_ass_fal_fg_04.stats.spread = 2 --marksman foregrip
+	
+	--extended magazine
+	self.parts.wpn_fps_ass_fal_m_01.stats.extra_ammo = 5
+	self.parts.wpn_fps_ass_fal_m_01.stats.concealment = -1
+	self.parts.wpn_fps_ass_fal_m_01.stats.spread = nil
+	self.parts.wpn_fps_ass_fal_m_01.stats.recoil = nil
+	self.parts.wpn_fps_ass_fal_m_01.stats.spread_moving = nil
+	
 	--optics
 	self.parts.wpn_fps_upg_o_health.stats = {
 		value = 5,

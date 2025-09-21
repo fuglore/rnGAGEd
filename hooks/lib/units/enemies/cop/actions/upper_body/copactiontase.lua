@@ -90,39 +90,47 @@ function CopActionTase:update(t)
 				})
 			end
 			
-			local vis_ray = self._unit:raycast("ray", shoot_from_pos, target_pos, "slot_mask", self._line_of_fire_slotmask, "sphere_cast_radius", self._w_usage_tweak.tase_sphere_cast_radius, "ignore_unit", self._tasing_local_unit, "report")
-
+			local vis_ray = self._unit:raycast("ray", shoot_from_pos, target_pos, "slot_mask", self._line_of_fire_slotmask, "sphere_cast_radius", 10, "ignore_unit", self._tasing_local_unit, "report")
+			
 			if not self._tasing_local_unit:movement():tased() or vis_ray then
+				self._break_t = self._break_t or t
+			
 				if self._tase_hit_effect then
 					World:effect_manager():fade_kill(self._tase_hit_effect)
 				end
+				
+				if t - self._break_t > 0.5 then
+					if Network:is_server() then
+						self._expired = true
+					else
+						self._tasing_local_unit:movement():on_tase_ended()
+						self._attention.unit:movement():on_targetted_for_attack(false, self._unit)
 
-				if Network:is_server() then
-					self._expired = true
-				else
-					self._tasing_local_unit:movement():on_tase_ended()
-					self._attention.unit:movement():on_targetted_for_attack(false, self._unit)
-
-					self._discharging = nil
-					self._tasing_player = nil
-					self._tasing_local_unit = nil
-					self.update = self._upd_empty
+						self._discharging = nil
+						self._tasing_player = nil
+						self._tasing_local_unit = nil
+						self.update = self._upd_empty
+					end
 				end
-			elseif not self._rope then
-				CopActionTase._wire_brush = CopActionTase._wire_brush or Draw:brush(Color(0.12, 0.12, 0.12):with_alpha(1))
+			else
+				self._break_t = nil
 				
-				local weapon_unit = self._ext_inventory:equipped_unit()
-				self._weapon_unit = weapon_unit
-				
-				if self._weapon_unit then
-					self._weapon_base = weapon_unit:base()
-					local obj_fire_pos = self._weapon_base._obj_fire:position()
-					self._rope = {
-						reached = nil,
-						dis_t = math.clamp(target_dis / self._w_usage_tweak.tase_distance, 0.05, 0.2),
-						reach_t = t + math.clamp(target_dis / self._w_usage_tweak.tase_distance, 0.05, 0.2),
-						from = obj_fire_pos:with_z(obj_fire_pos.z - 2)
-					}
+				if not self._rope then
+					CopActionTase._wire_brush = CopActionTase._wire_brush or Draw:brush(Color(0.12, 0.12, 0.12):with_alpha(1))
+					
+					local weapon_unit = self._ext_inventory:equipped_unit()
+					self._weapon_unit = weapon_unit
+					
+					if self._weapon_unit then
+						self._weapon_base = weapon_unit:base()
+						local obj_fire_pos = self._weapon_base._obj_fire:position()
+						self._rope = {
+							reached = nil,
+							dis_t = math.clamp(target_dis / self._w_usage_tweak.tase_distance, 0.05, 0.2),
+							reach_t = t + math.clamp(target_dis / self._w_usage_tweak.tase_distance, 0.05, 0.2),
+							from = obj_fire_pos:with_z(obj_fire_pos.z - 2)
+						}
+					end
 				end
 			end
 			
@@ -227,7 +235,7 @@ function CopActionTase:update(t)
 						self._expired = true
 					end
 				else
-					local vis_ray = self._unit:raycast("ray", shoot_from_pos, target_pos, "slot_mask", self._line_of_fire_slotmask, "sphere_cast_radius", self._w_usage_tweak.tase_sphere_cast_radius, "ignore_unit", self._tasing_local_unit, "report")
+					local vis_ray = self._unit:raycast("ray", shoot_from_pos, target_pos, "slot_mask", self._line_of_fire_slotmask, "sphere_cast_radius", 10, "ignore_unit", self._tasing_local_unit, "report")
 
 					if not vis_ray then
 						self._common_data.ext_network:send("action_tase_event", 3)
