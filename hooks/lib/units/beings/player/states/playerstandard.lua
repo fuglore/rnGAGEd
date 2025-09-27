@@ -1449,16 +1449,16 @@ function PlayerStandard:_update_movement(t, dt)
 				mvector3.step(achieved_walk_vel, self._last_velocity_xy, new_move_vec, acceleration * dt)
 			else
 				mvector3.multiply(mvec_move_dir_normalized, wanted_walk_speed)
-				mvector3.step(achieved_walk_vel, self._last_velocity_xy, wanted_walk_speed * self._move_dir:normalized(), acceleration * dt)
+				mvector3.step(achieved_walk_vel, self._last_velocity_xy, mvec_move_dir_normalized, acceleration * dt)
 			end
+		elseif mvector3.is_zero(self._last_velocity_xy) then
+			local starting_speed = wanted_walk_speed
+			mvector3.multiply(mvec_move_dir_normalized, starting_speed)
+			achieved_walk_vel = mvector3.copy(mvec_move_dir_normalized)
 		else
 			mvector3.multiply(mvec_move_dir_normalized, wanted_walk_speed)
 			mvector3.step(achieved_walk_vel, self._last_velocity_xy, mvec_move_dir_normalized, acceleration * dt)
 		end
-
-		--if mvector3.is_zero(self._last_velocity_xy) then
-			--mvector3.set_length(achieved_walk_vel, math.max(achieved_walk_vel:length(), 100))
-		--end
 
 		pos_new = mvec_pos_new
 		
