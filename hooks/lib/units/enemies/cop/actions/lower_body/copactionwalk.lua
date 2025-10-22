@@ -205,7 +205,7 @@ function CopActionWalk:_nav_chk_walk(t, dt, vis_state)
 
 				local next_pos = self._nav_point_pos(s_path[2])
 				
-				if not self._sync and #s_path > 2 then
+				if not self._sync and #s_path > 2 then --we have points ahead of our current one, can we shorten that?
 					local ray_params = {
 						tracker_from = self._common_data.nav_tracker,
 						pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
@@ -399,6 +399,8 @@ function CopActionWalk:append_nav_point(nav_point)
 
 	table.insert(self._simplified_path, nav_point)
 	
+	--on appending, make sure we can't shorten the path somehow.
+	
 	if is_initialized and #self._simplified_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
 		if self:_husk_needs_speedup() then
 			self._next_is_nav_link = nil
@@ -476,8 +478,9 @@ function CopActionWalk:stop()
 			self._end_of_curved_path = nil
 		end
 	end
-
-	if is_initialized and #s_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
+	
+	--do we have already have an action queued ahead of us? we should probably teleport into position.
+	if is_initialized and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
 		if self:_husk_needs_speedup() then
 			self._next_is_nav_link = nil
 			self._end_of_curved_path = nil
@@ -574,8 +577,11 @@ function CopActionWalk:_upd_nav_link(t)
 			if self._nav_link.element:nav_link_delay() > 0 then
 				self._nav_link.c_class:set_delay_time(0)
 			end
-		elseif #self._simplified_path > 2 then
-			if self:_husk_needs_speedup() then
+	
+		--attempt to simplify the path for clients if they have fallen behind and have finished doing the nav link, 
+		--as well as teleport if there is an action already queued
+		elseif #self._simplified_path > 2 then 
+			if self:_husk_needs_speedup() then 
 				self._next_is_nav_link = nil
 				self._end_of_curved_path = nil
 				self._end_of_path = nil
@@ -679,7 +685,7 @@ function CopActionWalk:_chk_falling_behind()
 		return true
 	end
 
-	if #self._simplified_path > 2 then
+	if #self._simplified_path > 2 then --check how much distance there is in the path that is left, are we falling behind?
 		local sz_path = #self._simplified_path
 		local prev_pos = self._common_data.pos
 		local i = 2
@@ -710,18 +716,8 @@ function CopActionWalk:_husk_needs_speedup()
 	if self._ext_movement._queued_actions and next(self._ext_movement._queued_actions) then
 		local queued_actions = self._ext_movement._queued_actions
 		for i = #queued_actions, 1, -1 do
-			if queued_actions.body_part == 1 then
+			if queued_actions.body_part == 1 or queued_actions.body_part == 2 then
 				return true
-			end
-			
-			if queued_actions[i].type == "walk" then
-				if queued_actions[i].persistent then
-					if mvec3_dis(self._nav_point_pos(queued_actions[i].nav_path[#queued_actions[i].nav_path]), self._nav_point_pos(self._simplified_path[#self._simplified_path])) > 500 then
-						return true
-					end
-				else
-					return true
-				end
 			end
 		end
 	end
@@ -740,7 +736,7 @@ function CopActionWalk:_get_current_max_walk_speed(move_dir)
 	local is_host = Network:is_server() or Global.game_settings.single_player
 
 	if not is_host then
-		if self:_husk_needs_speedup() or self:_chk_falling_behind() then
+		if self:_husk_needs_speedup() or self:_chk_falling_behind() then --speed up enemies if they have too many nav points ahead
 			local lod = self._ext_base:lod_stage()
 			local lod_multiplier = 1 + (Unit.occluded(self._unit) and 1 or CopActionWalk.lod_multipliers[lod] or 1)
 			speed = speed * lod_multiplier

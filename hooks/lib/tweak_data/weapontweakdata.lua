@@ -379,29 +379,17 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--self.b682.AMMO_MAX = self.b682.CLIP_AMMO_MAX * self.b682.NR_CLIPS_MAX
 	--self.b682.AMMO_PICKUP = {0.5, 1}
 	
-	--reinfeld 88, accuracy boost
-	self.m1897.stats.spread = 15
-	
 	--mosconi 12g tactical, concealment nerf
 	self.m590.stats.concealment = 15
 	
 	--m1014, ammo pickup nerf, accuracy boost
-	self.benelli.stats.spread = 14
-	self.benelli.stats.spread_moving = 14
-	self.benelli.stats.damage = 70
 	--self.benelli.AMMO_PICKUP = self:_pickup_chance(self.benelli.AMMO_MAX, PICKUP.OTHER)
 	self.benelli.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
 	
 	--predator, ammo pickup nerf, accuracy boost 
 	--self.spas12.AMMO_PICKUP = self:_pickup_chance(self.spas12.AMMO_MAX, PICKUP.OTHER)
 	self.spas12.NR_CLIPS_MAX = 8
-	self.spas12.stats.spread = 10
-	self.spas12.stats.spread_moving = 10
-	self.spas12.stats.damage = 75
 	self.spas12.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
-	
-	--deimos, slight damage nerf, slight pickup nerf
-	self.supernova.stats.damage = 100
 	
 	--breaker 12g, slight ammo pickup and max ammo increase
 	self.boot.CLIP_AMMO_MAX = 5
@@ -411,22 +399,16 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.boot.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
 	
 	--izhma, ammo pickup nerf, accuracy boost, damage boost
-	self.saiga.stats.damage = 100
-	self.saiga.stats.spread = 15
 	--self.saiga.NR_CLIPS_MAX = 4
 	--self.saiga.AMMO_MAX = self.saiga.CLIP_AMMO_MAX * self.saiga.NR_CLIPS_MAX
 	--self.saiga.AMMO_PICKUP = {self.saiga.AMMO_MAX * 0.03, self.saiga.AMMO_MAX * 0.055}
 	
 	--steakout, ammo pickup nerf, accuracy boost, damage boost
-	self.aa12.stats.damage = 100
-	self.aa12.stats.spread = 18
 	--self.aa12.NR_CLIPS_MAX = 4
 	--self.aa12.AMMO_MAX = self.aa12.CLIP_AMMO_MAX * self.aa12.NR_CLIPS_MAX
 	--self.aa12.AMMO_PICKUP = {self.aa12.AMMO_MAX * 0.03, self.aa12.AMMO_MAX * 0.055}
 	
 	--vd-12, ammo pickup nerf, accuracy boost
-	self.sko12.stats.damage = 100
-	self.sko12.stats.spread = 15
 	--self.sko12.AMMO_PICKUP = {self.sko12.AMMO_MAX * 0.03, self.sko12.AMMO_MAX * 0.055}
 	
 	--rattlesnake, accuracy boost, stability buff
@@ -596,12 +578,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.coach.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_HIGH
 	
 	--gsps, stability nerf, ammo pickup increase
-	self.m37.stats.spread = 14
 	self.m37.stats.recoil = 8
 	--self.m37.AMMO_PICKUP = self.boot.AMMO_PICKUP 
-	
-	--argos, accuracy boost
-	self.ultima.stats.spread = 15
 	
 	--judge, ammo pickup increase, accuracy reduced, fire-rate change
 	self.judge.stats.spread = 12
@@ -683,9 +661,9 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 					end
 					
 					if category == "shotgun" then
+						v.stats.damage = 155
+					
 						if v.has_magazine then
-							v.stats.spread = math.min(v.stats.spread + 4, #self.stats.spread)
-							
 							if v.stats.suppression then
 								v.stats.suppression = math.min(v.stats.suppression + 5, #self.stats.suppression)
 							end

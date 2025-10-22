@@ -31,18 +31,18 @@ function WeaponFalloffTemplate.setup_weapon_falloff_templates()
 	}
 	
 	weapon_falloff_templates.SHOTGUN_FALL_PRIMARY_LOW = {
-		optimal_distance = 500,
-		optimal_range = 600,
+		optimal_distance = 1000,
+		optimal_range = 1000,
 		near_falloff = 0,
-		far_falloff = 500,
+		far_falloff = 1000,
 		near_multiplier = 1,
 		far_multiplier = 0.1
 	}
 	weapon_falloff_templates.SHOTGUN_FALL_PRIMARY_MEDIUM = {
-		optimal_distance = 800,
-		optimal_range = 700,
+		optimal_distance = 1000,
+		optimal_range = 1000,
 		near_falloff = 0,
-		far_falloff = 600,
+		far_falloff = 1000,
 		near_multiplier = 1,
 		far_multiplier = 0.2
 	}
@@ -52,6 +52,39 @@ function WeaponFalloffTemplate.setup_weapon_falloff_templates()
 		near_falloff = 0,
 		far_falloff = 1000,
 		near_multiplier = 1.3,
+		far_multiplier = 0.3
+	}
+	
+	weapon_falloff_templates.SHOTGUN_FALL_SECONDARY_LOW = {
+		optimal_distance = 1000,
+		optimal_range = 1000,
+		near_falloff = 0,
+		far_falloff = 1000,
+		near_multiplier = 1,
+		far_multiplier = 0.1
+	}
+	weapon_falloff_templates.SHOTGUN_FALL_SECONDARY_MEDIUM = {
+		optimal_distance = 1000,
+		optimal_range = 1000,
+		near_falloff = 0,
+		far_falloff = 1000,
+		near_multiplier = 1,
+		far_multiplier = 0.2
+	}
+	weapon_falloff_templates.SHOTGUN_FALL_SECONDARY_HIGH = {
+		optimal_distance = 1000,
+		optimal_range = 1000,
+		near_falloff = 0,
+		far_falloff = 1000,
+		near_multiplier = 1,
+		far_multiplier = 0.1
+	}
+	weapon_falloff_templates.SHOTGUN_FALL_SECONDARY_VERYHIGH = {
+		optimal_distance = 1000,
+		optimal_range = 1000,
+		near_falloff = 0,
+		far_falloff = 1000,
+		near_multiplier = 1,
 		far_multiplier = 0.3
 	}
 	

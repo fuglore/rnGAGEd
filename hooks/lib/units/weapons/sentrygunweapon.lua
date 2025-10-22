@@ -61,10 +61,6 @@ function SentryGunWeapon:_fire_raycast(from_pos, direction, shoot_player, target
 	local bingus = not RNGAGED.settings.disable_enemy_projectiles and self._projectile_bullets
 	
 	if bingus then
-		--if shoot_player and self._hit_player then
-			--player_hit, player_ray_data = self:damage_player(col_ray, from_pos, direction, result)
-		--end
-
 		local ray_data = col_ray or player_ray_data
 			
 		if not ray_data then
