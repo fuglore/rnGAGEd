@@ -205,21 +205,33 @@ function CopActionWalk:_nav_chk_walk(t, dt, vis_state)
 
 				local next_pos = self._nav_point_pos(s_path[2])
 				
-				if not self._sync and #s_path > 2 then --we have points ahead of our current one, can we shorten that?
-					local ray_params = {
-						tracker_from = self._common_data.nav_tracker,
-						pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
-					}
-					
-					if not managers.navigation:raycast(ray_params) then
+				if not self._sync then --we have points ahead of our current one, can we shorten that?
+					if self:_husk_needs_speedup() then
+						local end_of_path = self._nav_point_pos(self._simplified_path[#self._simplified_path])
 						self._simplified_path = {
-							mvec3_cpy(self._common_data.pos),
-							self._simplified_path[#self._simplified_path]
+							mvec3_cpy(end_of_path),
+							mvec3_cpy(end_of_path)
 						}
 						
 						s_path = self._simplified_path
-						
+							
 						next_pos = self._nav_point_pos(s_path[2])
+					elseif #s_path > 2  then
+						local ray_params = {
+							tracker_from = self._common_data.nav_tracker,
+							pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
+						}
+						
+						if not managers.navigation:raycast(ray_params) then
+							self._simplified_path = {
+								mvec3_cpy(self._common_data.pos),
+								self._simplified_path[#self._simplified_path]
+							}
+							
+							s_path = self._simplified_path
+							
+							next_pos = self._nav_point_pos(s_path[2])
+						end
 					end
 				elseif self._sync and not self._action_desc.path_simplified and not self._next_is_nav_link and s_path[3] and not self:_reserve_nav_pos(next_pos, self._nav_point_pos(s_path[3]), self._nav_point_pos(c_path[#c_path]), vel) then
 					-- Nothing
@@ -401,7 +413,7 @@ function CopActionWalk:append_nav_point(nav_point)
 	
 	--on appending, make sure we can't shorten the path somehow.
 	
-	if is_initialized and #self._simplified_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
+	if is_initialized and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
 		if self:_husk_needs_speedup() then
 			self._next_is_nav_link = nil
 			self._end_of_curved_path = nil
@@ -580,37 +592,35 @@ function CopActionWalk:_upd_nav_link(t)
 	
 		--attempt to simplify the path for clients if they have fallen behind and have finished doing the nav link, 
 		--as well as teleport if there is an action already queued
+		elseif self:_husk_needs_speedup() then 
+			self._next_is_nav_link = nil
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+			self._walk_turn = nil
+			self._curve_path_index = 1
+			
+			self._curve_path = {
+				self._nav_point_pos(self._simplified_path[#self._simplified_path]),
+				self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			self._simplified_path = {
+				self._nav_point_pos(self._simplified_path[#self._simplified_path]),
+				self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			needs_curve_path = nil
 		elseif #self._simplified_path > 2 then 
-			if self:_husk_needs_speedup() then 
-				self._next_is_nav_link = nil
-				self._end_of_curved_path = nil
-				self._end_of_path = nil
-				self._walk_turn = nil
-				self._curve_path_index = 1
-				
-				self._curve_path = {
-					self._nav_point_pos(self._simplified_path[#self._simplified_path]),
-					self._nav_point_pos(self._simplified_path[#self._simplified_path])
-				}
-				
+			local ray_params = {
+				tracker_from = self._common_data.nav_tracker,
+				pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			if not managers.navigation:raycast(ray_params) then
 				self._simplified_path = {
-					self._nav_point_pos(self._simplified_path[#self._simplified_path]),
-					self._nav_point_pos(self._simplified_path[#self._simplified_path])
+					mvec3_cpy(self._common_data.pos),
+					self._simplified_path[#self._simplified_path]
 				}
-				
-				needs_curve_path = nil
-			else
-				local ray_params = {
-					tracker_from = self._common_data.nav_tracker,
-					pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
-				}
-				
-				if not managers.navigation:raycast(ray_params) then
-					self._simplified_path = {
-						mvec3_cpy(self._common_data.pos),
-						self._simplified_path[#self._simplified_path]
-					}
-				end
 			end
 		end
 		
@@ -716,8 +726,40 @@ function CopActionWalk:_husk_needs_speedup()
 	if self._ext_movement._queued_actions and next(self._ext_movement._queued_actions) then
 		local queued_actions = self._ext_movement._queued_actions
 		for i = #queued_actions, 1, -1 do
-			if queued_actions.body_part == 1 or queued_actions.body_part == 2 then
+			if queued_actions[i].type == "act" and queued_actions[i].body_part ~= 3 and not queued_actions[i].host_expired then
 				return true
+			end
+			
+			if queued_actions[i].type == "walk" then
+				local queued_nav_path = queued_actions[i].nav_path
+				local too_far, dis_error_total
+				
+				if queued_nav_path then
+					local prev_pos = self._common_data.pos
+					local i = 1
+					local dis_error_total = 0
+
+					while i <= #queued_nav_path do
+						local next_pos
+						local nav_point = queued_nav_path[i]
+						
+						if nav_point.x then
+							next_pos = nav_point
+						elseif nav_point.element then
+							next_pos = nav_point.element.position
+						end
+						
+						if next_pos then
+							dis_error_total = dis_error_total + mvec3_dis_sq(prev_pos, next_pos)
+							
+							if dis_error_total > 90000 then
+								return true
+							end
+						end
+						
+						i = i + 1
+					end
+				end
 			end
 		end
 	end
