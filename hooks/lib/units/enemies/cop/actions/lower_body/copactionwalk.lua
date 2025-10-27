@@ -829,3 +829,53 @@ function CopActionWalk._walk_spline(path, pos, index, walk_dis, desynced)
 		end
 	end
 end
+
+function CopActionWalk:_upd_wait(t)
+	local dt = t - self._last_upd_t
+	self._last_upd_t = TimerManager:game():time()
+
+	if self._ext_anim.move then
+		self:_stop_walk()
+	end
+
+	if not self._sync and not self._simplified_path[2] and (not self._end_of_curved_path or not self._persistent) then
+		table.insert(self._simplified_path, mvec3_cpy(self._simplified_path[1]))
+	end
+	
+	if not self._ext_anim.move and self._attention_pos then
+		local face_fwd = tmp_vec1
+		
+		mvec3_set(face_fwd, self._attention_pos)
+		mvec3_sub(face_fwd, self._common_data.pos)
+		
+		mrot_lookat(temp_rot1, face_fwd, math.UP)
+
+		rot_new = temp_rot1
+
+		mrot_slerp(rot_new, self._common_data.rot, rot_new, math.min(1, dt * 5))
+		
+		self._ext_movement:set_rotation(rot_new)
+	end
+
+	if not self._end_of_curved_path or not self._persistent then
+		self._curve_path_index = 1
+
+		if not self._simplified_path[2].x then
+			self._next_is_nav_link = self._simplified_path[2]
+		end
+
+		self:_chk_start_anim(self._nav_point_pos(self._simplified_path[2]))
+
+		if self._start_run then
+			self:_set_updator("_upd_start_anim_first_frame")
+		else
+			self:_set_updator(nil)
+		end
+
+		self._curve_path = {
+			self._nav_point_pos(self._simplified_path[1]),
+			self._nav_point_pos(self._simplified_path[2])
+		}
+		self._cur_vel = 0
+	end
+end
