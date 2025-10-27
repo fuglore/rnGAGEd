@@ -180,7 +180,7 @@ function CopActionWalk:_nav_chk_walk(t, dt, vis_state)
 	local new_pos, new_c_index, complete, upd_footstep, reservation_failed = nil
 
 	while not self._end_of_curved_path do
-		new_pos, new_c_index, complete = self._walk_spline(c_path, self._last_pos, c_index, walk_dis + footstep_length)
+		new_pos, new_c_index, complete = self._walk_spline(c_path, self._last_pos, c_index, walk_dis + footstep_length, self:_husk_needs_speedup())
 		upd_footstep = true
 
 		if complete then
@@ -788,4 +788,44 @@ function CopActionWalk:_get_current_max_walk_speed(move_dir)
 	end
 
 	return speed
+end
+
+function CopActionWalk._walk_spline(path, pos, index, walk_dis, desynced)
+	while true do
+		if desynced then
+			return path[#path], #path, true
+		end
+	
+		mvec3_set(tmp_vec1, path[index + 1])
+		mvec3_sub(tmp_vec1, path[index])
+		mvec3_set_z(tmp_vec1, 0)
+
+		local dis = mvec3_norm(tmp_vec1)
+
+		mvec3_set(tmp_vec2, pos)
+		mvec3_sub(tmp_vec2, path[index])
+		mvec3_set_z(tmp_vec2, 0)
+
+		local my_dis = mvec3_dot(tmp_vec2, tmp_vec1)
+
+		if dis == 0 or dis <= my_dis + walk_dis and walk_dis >= 0 then
+			if index == #path - 1 then
+				return path[index + 1], index, true
+			else
+				index = index + 1
+			end
+		elseif my_dis + walk_dis < 0 and walk_dis < 0 then
+			if index == 1 then
+				return path[index], index
+			else
+				index = index - 1
+			end
+		else
+			local return_vec = Vector3()
+
+			mvec3_lerp(return_vec, path[index], path[index + 1], (walk_dis + my_dis) / dis)
+
+			return return_vec, index
+		end
+	end
 end
