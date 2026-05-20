@@ -352,10 +352,20 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.ching.can_shoot_through_shield = true
 	self.ching.can_shoot_through_wall = true
 	
+	--lmg concealment
+	self.hcar.stats.concealment = 16
+	self.m249.stats.concealment = 18
+	self.par.stats.concealment = 17
+	self.rpk.stats.concealment = 15
+	self.m60.stats.concealment = 18
+	self.kacchainsaw.stats.concealment = 15
+	self.mg42.stats.concealment = 16
+	self.hk21.stats.concealment = 17
 	
 	--reinfeld 880, pickup buff, firerate buff, slight stability buff, mosconi 12g tac outclasses it too hard in vanilla
 	--self.r870.AMMO_PICKUP = {0.5, 1.5}
 	self.r870.stats.recoil = 10
+	self.r870.stats.concealment = 18
 	self.r870.fire_mode_data = {
 		fire_rate = 0.375
 	}
@@ -380,16 +390,18 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--self.b682.AMMO_PICKUP = {0.5, 1}
 	
 	--mosconi 12g tactical, concealment nerf
-	self.m590.stats.concealment = 15
+	self.m590.stats.concealment = 16
 	
 	--m1014, ammo pickup nerf, accuracy boost
 	--self.benelli.AMMO_PICKUP = self:_pickup_chance(self.benelli.AMMO_MAX, PICKUP.OTHER)
 	self.benelli.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
+	self.benelli.stats.concealment = 19
 	
 	--predator, ammo pickup nerf, accuracy boost 
 	--self.spas12.AMMO_PICKUP = self:_pickup_chance(self.spas12.AMMO_MAX, PICKUP.OTHER)
 	self.spas12.NR_CLIPS_MAX = 8
 	self.spas12.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
+	self.spas12.stats.concealment = 17
 	
 	--breaker 12g, slight ammo pickup and max ammo increase
 	self.boot.CLIP_AMMO_MAX = 5
@@ -398,18 +410,24 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--self.boot.AMMO_PICKUP = self:_pickup_chance(self.boot.AMMO_MAX, PICKUP.OTHER)
 	self.boot.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_MEDIUM
 	
-	--izhma, ammo pickup nerf, accuracy boost, damage boost
+	--izhma
 	--self.saiga.NR_CLIPS_MAX = 4
 	--self.saiga.AMMO_MAX = self.saiga.CLIP_AMMO_MAX * self.saiga.NR_CLIPS_MAX
 	--self.saiga.AMMO_PICKUP = {self.saiga.AMMO_MAX * 0.03, self.saiga.AMMO_MAX * 0.055}
+	self.saiga.stats.concealment = 16
 	
 	--steakout, ammo pickup nerf, accuracy boost, damage boost
 	--self.aa12.NR_CLIPS_MAX = 4
 	--self.aa12.AMMO_MAX = self.aa12.CLIP_AMMO_MAX * self.aa12.NR_CLIPS_MAX
 	--self.aa12.AMMO_PICKUP = {self.aa12.AMMO_MAX * 0.03, self.aa12.AMMO_MAX * 0.055}
+	self.aa12.stats.concealment = 18
 	
 	--vd-12, ammo pickup nerf, accuracy boost
 	--self.sko12.AMMO_PICKUP = {self.sko12.AMMO_MAX * 0.03, self.sko12.AMMO_MAX * 0.055}
+	self.sko12.stats.concealment = 15
+	
+	--deimos shotgun, concealment buff
+	self.supernova.stats.concealment = 16
 	
 	--rattlesnake, accuracy boost, stability buff
 	self.msr.stats.spread = 25
@@ -567,6 +585,7 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	self.basset.stats.suppression = 16
 	--self.basset.NR_CLIPS_MAX = 10
 	--self.basset.AMMO_MAX = self.basset.CLIP_AMMO_MAX * self.basset.NR_CLIPS_MAX
+	self.basset.stats.concealment = 17
 	
 	--claire, big damage buff, max ammo nerf, ammo pickup buff
 	self.coach.stats_modifiers = {
@@ -576,10 +595,12 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--self.coach.AMMO_MAX = self.coach.CLIP_AMMO_MAX * self.coach.NR_CLIPS_MAX
 	--self.coach.AMMO_PICKUP = {0.5, 1}
 	self.coach.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_PRIMARY_HIGH
+	self.coach.stats.concealment = 20
 	
 	--gsps, stability nerf, ammo pickup increase
 	self.m37.stats.recoil = 8
 	--self.m37.AMMO_PICKUP = self.boot.AMMO_PICKUP 
+	self.m37.stats.concealment = 18
 	
 	--judge, ammo pickup increase, accuracy reduced, fire-rate change
 	self.judge.stats.spread = 12
@@ -595,6 +616,12 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--street sweeper, damage buff
 	self.striker.stats.damage = 60
 	self.striker.damage_falloff = FALLOFF_TEMPLATE.SHOTGUN_FALL_SECONDARY_HIGH
+	
+	--argos 12, concealment nerf
+	self.ultima.stats.concealment = 20
+	
+	--goliath, concealment buff
+	self.rota.stats.concealment = 22
 	
 	--miniguns, damage increase, accuracy increase
 	self.m134.stats.damage = 61
@@ -658,6 +685,10 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 								v.damage_falloff = FALLOFF_TEMPLATE.SMG_FALL_LOW
 							end
 						end
+					end
+					
+					if category == "lmg" then
+						v.stats.spread = math.max(v.stats.spread - 4, 1)
 					end
 					
 					if category == "shotgun" then
@@ -842,6 +873,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 				if not v.regunned and v.spread and type(v.spread) == "table" then
 					v.spread = static_spread_table
 				end
+				
+				v.stats.spread_moving = v.stats.spread
 				
 				if akimbos[k] then
 					local akimbo_version = akimbos[k]

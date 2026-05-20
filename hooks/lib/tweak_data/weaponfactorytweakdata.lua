@@ -46,26 +46,28 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 				end
 			end
 			
-			local perfect = v.stats.recoil and v.stats.recoil > 0 or v.stats.spread and v.stats.spread > 0
-			local downsides = v.stats.recoil and v.stats.recoil < 0 or v.stats.spread and v.stats.spread < 0
-			
-			if downsides then
-				perfect = nil
-			end
-			
-			local perfect_concealment = not v.stats.concealment or v.stats.concealment > 0
-			
-			if perfect and perfect_concealment then
-				local highest_stat = not v.stats.spread and v.stats.recoil or not v.stats.recoil and v.stats.spread or math.max(v.stats.spread, v.stats.recoil)
-			
-				v.stats.concealment = -highest_stat
+			if v.type ~= "ammo" then
+				local perfect = v.stats.recoil and v.stats.recoil > 0 or v.stats.spread and v.stats.spread > 0
+				local downsides = v.stats.recoil and v.stats.recoil < 0 or v.stats.spread and v.stats.spread < 0
 				
-				perfect_concealment = nil
-			end
-			
-			if not downsides then
-				if v.stats.extra_ammo and v.stats.extra_ammo > 0 and perfect_concealment or v.stats.total_ammo_mod and v.stats.total_ammo_mod > 0 and perfect_concealment then
-					v.stats.concealment = -1
+				if downsides then
+					perfect = nil
+				end
+				
+				local perfect_concealment = not v.stats.concealment or v.stats.concealment > 0
+				
+				if perfect and perfect_concealment then
+					local highest_stat = not v.stats.spread and v.stats.recoil or not v.stats.recoil and v.stats.spread or math.max(v.stats.spread, v.stats.recoil)
+				
+					v.stats.concealment = -highest_stat
+					
+					perfect_concealment = nil
+				end
+				
+				if not downsides then
+					if v.stats.extra_ammo and v.stats.extra_ammo > 0 and perfect_concealment or v.stats.total_ammo_mod and v.stats.total_ammo_mod > 0 and perfect_concealment then
+						v.stats.concealment = -1
+					end
 				end
 			end
 		end

@@ -28,7 +28,7 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 	local spread_values = self:weapon_tweak_data().spread
 
 	if not spread_values then
-		return 0.16, 0.16
+		return 0.5, 0.5
 	end
 
 	local current_spread_value = spread_values["standing"]
@@ -43,11 +43,11 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 	
 	if not self._is_saw then
 		if spread_x <= 0 then
-			spread_x = 0.16
+			spread_x = 0.5
 		end
 		
 		if spread_y <= 0 then
-			spread_y = 0.16
+			spread_y = 0.5
 		end
 	end
 
@@ -59,8 +59,15 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 	if not self._is_saw then 
 		local regunz_mul = self.regunz_accrec_reduction or 0
 		
-		if self.regunz_accrec_mul then
-			regunz_mul = regunz_mul * self.regunz_accrec_mul
+		if self.regunz_accrec_mul and self.regunz_accrec_mul > 0 then
+			spread_x = spread_x + 0.2
+			spread_y = spread_y + 0.2
+		
+			if self.regunz_accrec_inverse then
+				regunz_mul = math.lerp(1, 0, regunz_mul) * self.regunz_accrec_mul
+			else
+				regunz_mul = regunz_mul * self.regunz_accrec_mul
+			end
 		end
 		
 		if self.regunz_movement_penalty and self.regunz_movement_penalty > 0 then	
@@ -150,8 +157,8 @@ local gunmuls = {
 		1.5
 	},
 	lmg = {
-		1.25,
-		0.25
+		1,
+		2
 	},
 	akimbo = {
 		0.8,
@@ -163,11 +170,11 @@ local gunmuls = {
 	},
 	smg = {
 		0.8,
-		1.5
+		0.8
 	},
 	minigun = {
 		0.5,
-		0.65
+		2
 	},
 	regunz_dmr = {
 		1.75,
@@ -252,6 +259,12 @@ Hooks:PostHook(NewRaycastWeaponBase, "_update_stats_values", "regunz_accfalloff"
 			--if slow_guns[cat] then
 				--self.regunz_slow_gun = true
 			--end
+			
+			if not self.regunz_accrec_inverse then
+				if cat == "lmg" or cat == "minigun" then
+					self.regunz_accrec_inverse = true
+				end
+			end
 			
 			
 			if cat == "akimbo" then
