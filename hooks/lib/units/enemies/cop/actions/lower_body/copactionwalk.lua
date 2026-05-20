@@ -401,7 +401,7 @@ function CopActionWalk:append_nav_point(nav_point)
 	
 	--on appending, make sure we can't shorten the path somehow.
 	
-	if is_initialized and #self._simplified_path >= 3 and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
+	if is_initialized and self.update ~= self._upd_nav_link and self.update ~= self._upd_nav_link_first_frame and self.update ~= self._upd_nav_link_blend_to_idle and self.update ~= self._upd_stop_anim_first_frame and self.update ~= self._upd_stop_anim and self.update ~= self._upd_walk_turn_first_frame and self.update ~= self._upd_walk_turn then
 		if self:_husk_needs_speedup() then
 			self._next_is_nav_link = nil
 			self._end_of_curved_path = nil
@@ -580,37 +580,35 @@ function CopActionWalk:_upd_nav_link(t)
 	
 		--attempt to simplify the path for clients if they have fallen behind and have finished doing the nav link, 
 		--as well as teleport if there is an action already queued
+		elseif self:_husk_needs_speedup() then 
+			self._next_is_nav_link = nil
+			self._end_of_curved_path = nil
+			self._end_of_path = nil
+			self._walk_turn = nil
+			self._curve_path_index = 1
+			
+			self._curve_path = {
+				self._nav_point_pos(self._simplified_path[#self._simplified_path]),
+				self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			self._simplified_path = {
+				self._nav_point_pos(self._simplified_path[#self._simplified_path]),
+				self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			needs_curve_path = nil
 		elseif #self._simplified_path > 2 then 
-			if self:_husk_needs_speedup() then 
-				self._next_is_nav_link = nil
-				self._end_of_curved_path = nil
-				self._end_of_path = nil
-				self._walk_turn = nil
-				self._curve_path_index = 1
-				
-				self._curve_path = {
-					self._nav_point_pos(self._simplified_path[#self._simplified_path]),
-					self._nav_point_pos(self._simplified_path[#self._simplified_path])
-				}
-				
+			local ray_params = {
+				tracker_from = self._common_data.nav_tracker,
+				pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
+			}
+			
+			if not managers.navigation:raycast(ray_params) then
 				self._simplified_path = {
-					self._nav_point_pos(self._simplified_path[#self._simplified_path]),
-					self._nav_point_pos(self._simplified_path[#self._simplified_path])
+					mvec3_cpy(self._common_data.pos),
+					self._simplified_path[#self._simplified_path]
 				}
-				
-				needs_curve_path = nil
-			else
-				local ray_params = {
-					tracker_from = self._common_data.nav_tracker,
-					pos_to = self._nav_point_pos(self._simplified_path[#self._simplified_path])
-				}
-				
-				if not managers.navigation:raycast(ray_params) then
-					self._simplified_path = {
-						mvec3_cpy(self._common_data.pos),
-						self._simplified_path[#self._simplified_path]
-					}
-				end
 			end
 		end
 		

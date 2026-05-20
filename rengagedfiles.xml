@@ -1,9 +1,4 @@
 ﻿<table directory="assets">
-	<animation_states path="anims/units/enemies/cop/civilian"/>
-	<animation_states path="anims/units/enemies/cop/std"/>
-
-	<sequence_manager path="units/payday2/characters/ragdoll"/>
-
 	<effect path="effects/pd2_mod_rgg/particles/melee_trail"/>
 	<effect path="effects/pd2_mod_rgg/particles/bullet"/>
 	<effect path="effects/pd2_mod_rgg/particles/bullet_marshal"/>

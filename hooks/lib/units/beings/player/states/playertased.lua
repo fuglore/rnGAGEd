@@ -8,19 +8,18 @@ end)
 function PlayerTased:enter(state_data, enter_data)
 	PlayerTased.super.enter(self, state_data, enter_data)
 	--log("hmm")
+	local t = managers.player:player_timer():time()
+	
 	local projectile_entry = managers.blackmarket:equipped_projectile()
 
 	if tweak_data.blackmarket.projectiles[projectile_entry].is_a_grenade then
 		self:_interupt_action_throw_grenade()
 	else
-		self:_interupt_action_throw_projectile()
+		self:_interupt_action_throw_projectile(t)
 	end
 
 	self:_interupt_action_reload()
 	self:_interupt_action_steelsight()
-
-	local t = managers.player:player_timer():time()
-
 	self:_interupt_action_melee(t)
 	self:_interupt_action_ladder(t)
 	self:_interupt_action_charging_weapon(t)
