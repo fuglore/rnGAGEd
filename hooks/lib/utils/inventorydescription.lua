@@ -1,3 +1,7 @@
+if RNGAGED.settings.disable_balance_changes then
+	return
+end
+
 local old_stats_func = WeaponDescription._get_stats
 
 function WeaponDescription._get_stats(name, category, slot, blueprint)
