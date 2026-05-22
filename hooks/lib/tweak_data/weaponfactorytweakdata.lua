@@ -37,6 +37,11 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 	
 	--m308 b-team body concealment nerf
 	self.parts.wpn_fps_ass_m14_body_ruger.stats.concealment = 10
+	
+	--ak5 cqb barrel
+	self.parts.wpn_fps_ass_ak5_b_short.stats.spread = -1
+	self.parts.wpn_fps_ass_ak5_b_short.stats.concealment = 1
+	self.parts.wpn_fps_ass_ak5_b_short.stats.recoil = 1
 
 	for k, v in pairs(self.parts) do
 		if not saw_parts[k] and v.stats and not v.regunned then

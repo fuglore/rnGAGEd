@@ -47,7 +47,7 @@ function PlayerTased:enter(state_data, enter_data)
 	end
 
 	self._countering_tase = nil
-	self._next_shock = 0.5
+	self._next_shock = t + 0.35
 	self._taser_value = 1
 	self._num_shocks = 0
 

@@ -845,6 +845,7 @@ function PlayerDamage:update(unit, t, dt)
 			self._unit:sound():play("critical_state_heart_stop")
 
 			self._downed_progression = nil
+			managers.music:set_volume_multiplier("downed", 1, 1)
 		end
 	end
 

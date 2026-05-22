@@ -21,7 +21,7 @@ local do_impact_orig = InstantBulletBase.give_impact_damage
 if not RNGAGED.settings.disable_balance_changes then
 
 function RaycastWeaponBase:can_shield_knock()
-	return self._shield_knock and managers.player:temporary_upgrade_value("temporary", "overkill_damage_multiplier", 1) > 1
+	return self._shield_knock and managers.player:temporary_upgrade_value("temporary", "overkill_damage_multiplier", 1) > 1 or self._regunz_minigun_knock_chance
 end
 
 function RaycastWeaponBase:chk_shield_knock(hit_unit, col_ray, weapon_unit, user_unit, damage)
@@ -38,6 +38,34 @@ function RaycastWeaponBase:chk_shield_knock(hit_unit, col_ray, weapon_unit, user
 
 	if char_dmg_ext.is_immune_to_shield_knockback and char_dmg_ext:is_immune_to_shield_knockback() then
 		return false
+	end
+	
+	if self._regunz_minigun_knock_chance then
+		local rand = math.random()
+		local chance = self._regunz_minigun_knock_chance
+		
+		if rand < chance then
+			local damage_info = {
+				damage = 0,
+				type = "shield_knock",
+				variant = "melee",
+				col_ray = col_ray,
+				result = {
+					variant = "melee",
+					type = "shield_knock"
+				}
+			}
+
+			char_dmg_ext:force_hurt(damage_info)
+			
+			self._shield_knock_add = 0
+
+			return true
+		end
+	end
+	
+	if self._regunz_minigun_knock_chance and managers.player:temporary_upgrade_value("temporary", "overkill_damage_multiplier", 1) <= 1 then
+		return
 	end
 
 	self._shield_knock_add = self._shield_knock_add or 0
@@ -72,8 +100,6 @@ function RaycastWeaponBase:chk_shield_knock(hit_unit, col_ray, weapon_unit, user
 	return false
 end
 
-end
-
 function InstantBulletBase:give_impact_damage(col_ray, weapon_unit, user_unit, damage, armor_piercing, shield_knock, knock_down, stagger, variant)
 	if weapon_unit and weapon_unit:base() and weapon_unit:base()._hurt_dmg_increase and user_unit == managers.player:player_unit() then
 		if col_ray.unit:anim_data() and col_ray.unit:anim_data().hurt then
@@ -83,62 +109,6 @@ function InstantBulletBase:give_impact_damage(col_ray, weapon_unit, user_unit, d
 	
 	return do_impact_orig(self, col_ray, weapon_unit, user_unit, damage, armor_piercing, shield_knock, knock_down, stagger, variant)
 end
-
-function RaycastWeaponBase:_get_anim_start_offset(anim)
-	if anim ~= "reload" and anim ~= "reload_not_empty" and anim ~= "reload_empty" then
-		return false
-	end
-	
-	if self:use_shotgun_reload() then
-		return
-	end
-
-	local player_unit = managers.player:player_unit()
-	
-	if not player_unit then
-		return false
-	end
-
-	local is_player = self._setup.user_unit == managers.player:player_unit()
-	
-	if not is_player then
-		return false
-	end
-	
-	local current_state = player_unit:movement()._current_state
-	
-	if not current_state then
-		return false
-	end
-
-	return self._last_saved_reload_prog
-end
-
-Hooks:PostHook(RaycastWeaponBase, "start_reload", "regunz_clean_up_weaponlib_compatibility", function(self)
-	if not self._last_saved_reload_prog then
-		return
-	end
-
-	local player_unit = managers.player:player_unit()
-	
-	if not player_unit or self._setup.user_unit ~= player_unit then
-		return
-	end
-	
-	local current_state = player_unit:movement()._current_state
-	
-	if not current_state then
-		return
-	end
-
-	if current_state._state_data.reload_expire_t then
-		current_state._state_data.reload_expire_t = current_state._state_data.reload_expire_t - self._last_saved_reload_prog
-	end
-
-	if current_state._state_data.reload_steelsight_expire_t then
-		current_state._state_data.reload_steelsight_expire_t = current_state._state_data.reload_steelsight_expire_t - self._last_saved_reload_prog
-	end
-end)
 
 local mvec_to = Vector3()
 local mvec_right_ax = Vector3()
@@ -239,7 +209,6 @@ function RaycastWeaponBase:check_autoaim(from_pos, direction, max_dist, use_aim_
 				end
 
 				autohit_min_angle = math_lerp(autohit_near_angle, autohit_far_angle, tar_vec_len / autohit_far_dis)
-				local autohit_force_angle = autohit_min_angle / 2
 
 				if error_angle < autohit_min_angle then
 					local percent_error = error_angle / autohit_min_angle
@@ -268,8 +237,6 @@ function RaycastWeaponBase:check_autoaim(from_pos, direction, max_dist, use_aim_
 								mvec3_sub(tmp_vec1, chk_pos)
 
 								closest_ray.distance_to_aim_line = mvec3_len(tmp_vec1)
-								
-								force_hit = closest_error < autohit_force_angle
 							end
 						end
 					end
@@ -312,23 +279,22 @@ function RaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_mul
 
 	if self._autoaim and self._autohit_data then
 		local weight = 0.1
+		local autohit_data = self._autohit_data
 
 		if hit_enemy then
-			self._autohit_current = (self._autohit_current + weight) / (1 + weight)
+			self._autohit_current = autohit_data.INIT_RATIO
 		else
 			local auto_hit_candidate, enemies_to_suppress, force_hit = self:check_autoaim(from_pos, direction, nil, nil, nil, true)
 			result.enemies_in_cone = enemies_to_suppress or false
 
-			if auto_hit_candidate then
-				local autohit_chance = self:get_current_autohit_chance_for_roll()
+			if auto_hit_candidate and self._autohit_current > autohit_data.MIN_RATIO then
+				local autohit_chance = self._autohit_current
 
 				if autohit_mul then
 					autohit_chance = autohit_chance * autohit_mul
 				end
 
 				if force_hit or math.random() < autohit_chance then
-					self._autohit_current = (self._autohit_current + weight) / (1 + weight)
-
 					mvec3_set(mvec_spread_direction, auto_hit_candidate.ray)
 					mvec3_set(mvec_to, mvec_spread_direction)
 					mvec3_mul(mvec_to, ray_distance)
@@ -339,9 +305,9 @@ function RaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_mul
 			end
 
 			if hit_enemy then
-				self._autohit_current = (self._autohit_current + weight) / (1 + weight)
+				self._autohit_current = autohit_data.INIT_RATIO
 			elseif auto_hit_candidate then
-				self._autohit_current = self._autohit_current / (1 + weight)
+				self._autohit_current = math.min(autohit_data.MAX_RATIO, self._autohit_current + autohit_data.MAX_RATIO * weight)
 			end
 		end
 	end
@@ -430,3 +396,63 @@ function RaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_mul
 
 	return result
 end
+
+end
+
+---------------------------------------------------------------------------------------
+
+function RaycastWeaponBase:_get_anim_start_offset(anim)
+	if anim ~= "reload" and anim ~= "reload_not_empty" and anim ~= "reload_empty" then
+		return false
+	end
+	
+	if self:use_shotgun_reload() then
+		return
+	end
+
+	local player_unit = managers.player:player_unit()
+	
+	if not player_unit then
+		return false
+	end
+
+	local is_player = self._setup.user_unit == managers.player:player_unit()
+	
+	if not is_player then
+		return false
+	end
+	
+	local current_state = player_unit:movement()._current_state
+	
+	if not current_state then
+		return false
+	end
+
+	return self._last_saved_reload_prog
+end
+
+Hooks:PostHook(RaycastWeaponBase, "start_reload", "regunz_clean_up_weaponlib_compatibility", function(self)
+	if not self._last_saved_reload_prog then
+		return
+	end
+
+	local player_unit = managers.player:player_unit()
+	
+	if not player_unit or self._setup.user_unit ~= player_unit then
+		return
+	end
+	
+	local current_state = player_unit:movement()._current_state
+	
+	if not current_state then
+		return
+	end
+
+	if current_state._state_data.reload_expire_t then
+		current_state._state_data.reload_expire_t = current_state._state_data.reload_expire_t - self._last_saved_reload_prog
+	end
+
+	if current_state._state_data.reload_steelsight_expire_t then
+		current_state._state_data.reload_steelsight_expire_t = current_state._state_data.reload_steelsight_expire_t - self._last_saved_reload_prog
+	end
+end)

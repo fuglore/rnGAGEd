@@ -13,6 +13,10 @@
 	
 	"bm_wp_upg_a_custom_desc": "Less pellets. But more impact.",
 	
+	"bm_w_cat_mini": "Gets more accurate as you fire, has a chance to knock back shields, heavy.",
+	"bm_w_cat_lmg": "Gets more accurate as you fire.",
+	"bm_w_hailstorm_desc": "Gets more accurate as you fire, volley fire mode pierces shields, walls and body armor.",
+	
 	"bm_wp_wtf_sbl_sights":  "...What the fuck are you doing?",
 	
 	"menu_deckall_2": "Conditioning",

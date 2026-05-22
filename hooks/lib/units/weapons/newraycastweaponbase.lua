@@ -243,6 +243,11 @@ Hooks:PostHook(NewRaycastWeaponBase, "_update_stats_values", "regunz_accfalloff"
 		self.regunz_zoom_mul = self._current_stats.zoom / 120
 		
 		self._regunz_reload_speed_mul = stats_tweak_data.concealment_reload_mul[self._current_stats_indices.concealment]
+		self._regunz_minigun_knock_chance = self:weapon_tweak_data().regunz_shield_knock_chance
+		
+		if self:weapon_tweak_data().weapon_movement_penalty then
+			self._movement_penalty = self._movement_penalty == 1 and self:weapon_tweak_data().weapon_movement_penalty or self._movement_penalty * self:weapon_tweak_data().weapon_movement_penalty
+		end
 	end
 
 	if not disallow_replenish and self:weapon_tweak_data().categories then

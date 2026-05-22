@@ -68,10 +68,10 @@ function WeaponTweakData:_init_new_weapons(weapon_data)
 	}
 	weapon_data.autohit_minigun_default = {
 		INIT_RATIO = 0,
-		MAX_RATIO = 1,
+		MAX_RATIO = 0.1,
 		far_angle = 3,
 		far_dis = 2000,
-		MIN_RATIO = 1,
+		MIN_RATIO = 0.1,
 		near_angle = 3
 	}
 
@@ -626,9 +626,22 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	--miniguns, damage increase, accuracy increase
 	self.m134.stats.damage = 61
 	self.m134.stats.spread = 12
+	self.m134.stats.concealment = 9
+	self.m134.regunz_shield_knock_chance = 0.2
+	self.m134.weapon_movement_penalty = 0.85
+	self.m134.has_description = true
+	self.m134.desc_id = "bm_w_cat_mini"
+
 	self.shuno.stats.damage = 41
 	self.shuno.stats.spread = 10
 	self.shuno.stats.recoil = 10
+	self.shuno.stats.concealment = 15
+	self.shuno.regunz_shield_knock_chance = 0.1
+	self.shuno.weapon_movement_penalty = 0.85
+	self.shuno.has_description = true
+	self.shuno.desc_id = "bm_w_cat_mini"
+	
+	self.hailstorm.has_description = true
 
 	self:_init_rengaged_stat_changes()
 	local akimbos = self:get_akimbo_mappings()
@@ -689,6 +702,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 					
 					if category == "lmg" then
 						v.stats.spread = math.max(v.stats.spread - 4, 1)
+						v.has_description = true
+						v.desc_id = "bm_w_cat_lmg"
 					end
 					
 					if category == "shotgun" then
