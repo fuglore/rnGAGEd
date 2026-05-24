@@ -55,18 +55,16 @@ end
 function ProjectileBase:throw(params)
 	self._owner = params.owner
 	local velocity = params.dir
-	local adjust_z = RNGAGED.settings.disable_balance_changes and 50 or 25
-	local launch_speed = RNGAGED.settings.disable_balance_changes and 250 or 750
+	local adjust_z = 50
+	local launch_speed = 250
 	local push_at_body_index = nil
 
 	if params.projectile_entry and tweak_data.projectiles[params.projectile_entry] then
-		adjust_z = tweak_data.blackmarket.projectiles[params.projectile_entry].adjust_z or tweak_data.projectiles[params.projectile_entry].adjust_z or adjust_z
-		launch_speed = tweak_data.blackmarket.projectiles[params.projectile_entry].launch_speed or tweak_data.projectiles[params.projectile_entry].launch_speed or launch_speed
-		push_at_body_index = tweak_data.blackmarket.projectiles[params.projectile_entry].push_at_body_index or tweak_data.projectiles[params.projectile_entry].push_at_body_index
+		adjust_z = tweak_data.projectiles[params.projectile_entry].adjust_z or adjust_z
+		launch_speed = tweak_data.projectiles[params.projectile_entry].launch_speed or launch_speed
+		push_at_body_index = tweak_data.projectiles[params.projectile_entry].push_at_body_index
 	end
-	
-	--log("launch_speed: " .. launch_speed)
-	
+
 	velocity = velocity * launch_speed
 	velocity = Vector3(velocity.x, velocity.y, velocity.z + adjust_z)
 	local mass_look_up_modifier = self._mass_look_up_modifier or 2

@@ -71,7 +71,7 @@ function WeaponTweakData:_init_new_weapons(weapon_data)
 		MAX_RATIO = 0.1,
 		far_angle = 3,
 		far_dis = 2000,
-		MIN_RATIO = 0.1,
+		MIN_RATIO = 0.05,
 		near_angle = 3
 	}
 
@@ -651,6 +651,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 		local revolver = nil
 		
 		if not v.regunned and v.stats then
+			local rifle_buff = false
+			
 			if v.categories then
 				local add_dmr = nil
 				local cats = v.categories
@@ -681,12 +683,17 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 										v.single.fire_rate = v.single.fire_rate / 0.6
 									end
 								end
+							else
+								v.damage_falloff = FALLOFF_TEMPLATE.ASSAULT_FALL_HIGH
 							end
 						elseif v.stats.damage > 60 then
 							v.damage_falloff = FALLOFF_TEMPLATE.ASSAULT_FALL_MEDIUM
+							
+							rifle_buff = true
 						else
 							v.damage_falloff = FALLOFF_TEMPLATE.ASSAULT_FALL_LOW
 							v.stats.concealment = math.min(v.stats.concealment + 4, #self.stats.concealment)
+							rifle_buff = true
 						end
 					elseif category == "smg" then
 						if v.fire_mode_data then
@@ -731,6 +738,12 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 										--log(k .. " has shotgun reload")
 									end
 								end
+							end
+						end
+						
+						if not v.has_magazine and v.use_shotgun_reload then
+							if v.CLIP_AMMO_MAX <= 8 then
+								v.NR_CLIPS_MAX = 8
 							end
 						end
 					end
@@ -824,6 +837,10 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 					
 					clips_max = math.floor(clips_max)
 					
+					if rifle_buff then
+						clips_max = clips_max + 1
+					end
+					
 					v.NR_CLIPS_MAX = clips_max
 					v.AMMO_MAX = v.CLIP_AMMO_MAX * v.NR_CLIPS_MAX
 					
@@ -883,6 +900,10 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 					else
 						v.stats.suppression = math.min(v.stats.suppression + 5, #self.stats.suppression)
 					end
+				end
+				
+				if rifle_buff then
+					v.stats.damage = v.stats.damage + 24
 				end
 				
 				if not v.regunned and v.spread and type(v.spread) == "table" then

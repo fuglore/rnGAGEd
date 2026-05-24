@@ -3,7 +3,7 @@ if not RNGAGED.settings.disable_balance_changes then
 function NewRaycastWeaponBase:recoil_wait()
 	local tweak_is_auto = tweak_data.weapon[self._name_id].FIRE_MODE == "auto"
 	local weapon_is_auto = self:fire_mode() == "auto"
-	local multiplier = tweak_is_auto == weapon_is_auto and 1 or 1.1
+	local multiplier = tweak_is_auto == weapon_is_auto and 1 or 1.05
 
 	return self:weapon_fire_rate() * multiplier
 end
@@ -56,10 +56,14 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 		spread_y = spread_y * self._spread_multiplier[2]
 	end
 	
-	if not self._is_saw then 
-		local regunz_mul = self.regunz_accrec_reduction or 0
+	if not self._is_saw then
+		local accrec = self.regunz_accrec_reduction or 0
+		local movepen = self.regunz_movement_penalty or 0
+		local regunz_mul = 0
 		
-		if self.regunz_accrec_mul and self.regunz_accrec_mul > 0 then
+		if self.regunz_accrec_inverse or accrec > 0 and self.regunz_accrec_mul and self.regunz_accrec_mul > 0 then
+			regunz_mul = self.regunz_accrec_reduction or 0
+			
 			spread_x = spread_x + 0.2
 			spread_y = spread_y + 0.2
 		
@@ -70,11 +74,11 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 			end
 		end
 		
-		if self.regunz_movement_penalty and self.regunz_movement_penalty > 0 then	
+		if movepen > 0 and self.regunz_movepen_mul and self.regunz_movepen_mul > 0 then	
 			spread_x = spread_x + 0.2
 			spread_y = spread_y + 0.2
 		
-			local dressed_mov_penalty = self.regunz_movement_penalty
+			local dressed_mov_penalty = movepen
 			
 			if self.regunz_movepen_mul then
 				dressed_mov_penalty = dressed_mov_penalty * self.regunz_movepen_mul
@@ -150,11 +154,15 @@ local gunmuls = {
 	},
 	shotgun = {
 		0,
-		0.5
+		0.25
 	},
 	revolver = {
-		1.2,
-		1.5
+		1.5,
+		0.5
+	},
+	pistol = {
+		1,
+		0.5
 	},
 	lmg = {
 		1,
@@ -165,20 +173,20 @@ local gunmuls = {
 		0.5
 	},
 	assault_rifle = {
-		1.5,
+		1,
 		0.8
 	},
 	smg = {
 		0.8,
-		0.8
+		0.5
 	},
 	minigun = {
 		0.5,
 		2
 	},
 	regunz_dmr = {
-		1.75,
-		1
+		0.8,
+		0.8
 	}
 }
 

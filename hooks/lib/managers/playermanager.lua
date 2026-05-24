@@ -327,13 +327,13 @@ function PlayerManager:_on_powerload_event(weapon_unit)
 	local powerload_tase_ready = not self._next_electric_reload_t or self._next_electric_reload_t < t
 	
 	if powerload_dmg_resist_ready or powerload_tase_ready then
-		local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 500, managers.slot:get_mask("enemies"))
+		local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 750, managers.slot:get_mask("enemies"))
 		local obstruction_slotmask = managers.slot:get_mask("world_geometry", "vehicles")
 		local has_enemies
 		local head_pos = player_unit:movement():m_head_pos()
 		
 		for _, enemy in ipairs(enemies) do
-			if enemy:character_damage() and enemy:character_damage().is_friendly_fire and not enemy:character_damage():is_friendly_fire(player_unit) or enemy:brain() and enemy:brain().is_hostile and enemy:brain():is_hostile() then
+			if enemy:character_damage() and (not enemy:character_damage().is_friendly_fire or not enemy:character_damage():is_friendly_fire(player_unit)) and enemy:brain() and enemy:brain().is_hostile and enemy:brain():is_hostile() then
 				local enemy_head_pos = enemy:movement():m_head_pos()
 				local obstructed = enemy:raycast("ray", head_pos, enemy_head_pos, "slot_mask", obstruction_slotmask, "report")
 				
@@ -371,7 +371,7 @@ function PlayerManager:_on_powerload_event(weapon_unit)
 					player_damage = 0,
 					tase_strength = "heavy",
 					hit_pos = explosion_pos,
-					range = 500,
+					range = 750,
 					collision_slotmask = slot_mask,
 					curve_pow = 3,
 					damage = 0,

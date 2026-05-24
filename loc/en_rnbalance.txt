@@ -3,7 +3,7 @@
 	
 	"bm_equipment_first_aid_kit_desc" : "To use the First Aid Kit, you need to place it by holding $BTN_USE_ITEM;. Once placed it cannot be moved, but it can be used by you and your crew by holding $BTN_INTERACT; to regain health.$NL;$NL;A deployed first aid kit can be used once and when it is consumed, it disappears.$NL;$NL;The First Aid Kit is a collection of supplies and equipment for use in giving first aid, and includes a LOT of painkillers.$NL;$NL;Also gasoline, battery acid, magic crystals and candy bars.",
 	
-	"bm_grenade_dada_com_desc" : "A grenade styled after a russian nesting doll, normally crafted from linden wood, these are made out of steel.$NL;$NL;When armed, the grenade will instantly collide on impact with surfaces or enemies, dealing serious damage for glorious mother russia.",
+	"bm_grenade_dada_com_desc" : "A grenade styled after a russian nesting doll, normally crafted from linden wood, these are made out of steel.$NL;$NL;When armed, the grenade will instantly detonate on impact with surfaces or enemies, dealing serious damage for glorious mother russia.",
 	
 	"bm_wpn_prj_jav_desc" : "The javelin is a spear-like weapon, weighted for throwing. Archelogical evidence points towards a stick with a pointy end being used as a weapon since the dawn of man, but there are no records of it being used specifically for robberies...until you, that is.$NL;$NL;A good throw will go right through modern body armor, if it ain't broke, don't fix it.",
 	
@@ -76,7 +76,7 @@
 	"menu_deck23_7_desc" : "When your health gets below ##25%## you will be immune to health damage for ##2## seconds.$NL;This cannot occur more than once every ##20## seconds.",
 	
 	"menu_single_shot_ammo_return_beta": "Power Reload",
-	"menu_single_shot_ammo_return_beta_desc": "BASIC: ##$basic##\nWhen you are starting a reload while there are enemies within ##5## meters, you take ##75%## less damage for ##3## seconds.\n\nThis can only occur every ##10## seconds.\n\nACE: ##$pro##\nStarting a reload while there are enemies within ##5## meters will cause a shock explosion.\n\nThis can only occur every ##20## seconds.",
+	"menu_single_shot_ammo_return_beta_desc": "BASIC: ##$basic##\nWhen you are starting a reload while there are enemies within ##7.5## meters, you take ##75%## less damage for ##3## seconds.\n\nThis can only occur every ##10## seconds.\n\nACE: ##$pro##\nStarting a reload while there are enemies within ##7.5## meters will cause a shock explosion.\n\nThis can only occur every ##20## seconds.",
 	
 	"menu_sniper_graze_damage": "Graze",
 	"menu_sniper_graze_damage_desc": "BASIC: ##$basic##\nYour snipers deal ##25%## of the damage dealt in a ##100cm## radius of the bullet trajectory upon hitting an enemy.\n\nACE: ##$pro##\nIf the bullet kills an enemy with a headshot, the damage dealt by the sniper's bullet trajectory is increased to ##50%##.",

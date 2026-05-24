@@ -64,13 +64,14 @@ function ExplosionManager:_damage_characters(detect_results, params, variant, da
 		len = mvector3.direction(dir, hit_pos, dir)
 		
 		local can_damage = not verify_callback
+		local reduce_dmg = nil
 
 		if verify_callback then
 			can_damage = verify_callback(unit)
 		end
 
 		if alive(unit) then
-			if check_for_shield then
+			if check_for_shield and can_damage then
 				local dir_normalized = dir:normalized()
 				local unit_inv = unit:inventory()
 				
@@ -78,7 +79,7 @@ function ExplosionManager:_damage_characters(detect_results, params, variant, da
 					local shield_fwd_inv = -unit_inv:shield_unit():rotation():y()
 					
 					if mvector3.dot(dir_normalized, shield_fwd_inv) > 0.7 then
-						can_damage = nil
+						reduce_dmg = true
 					end
 				end
 				
@@ -93,7 +94,7 @@ function ExplosionManager:_damage_characters(detect_results, params, variant, da
 					end
 					
 					if ray then
-						can_damage = nil
+						reduce_dmg = true
 					end
 				end
 			end
@@ -105,6 +106,10 @@ function ExplosionManager:_damage_characters(detect_results, params, variant, da
 
 				if damage > 0 then
 					action_data.damage = math.max(damage * math.pow(math.clamp(1 - len / range, 0, 1), curve_pow), 1)
+					
+					if reduce_dmg then 
+						action_data.damage = action_data.damage * 0.25
+					end
 				else
 					action_data.damage = 0
 				end

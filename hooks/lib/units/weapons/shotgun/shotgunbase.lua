@@ -146,7 +146,7 @@ function ShotgunBase:_fire_raycast(user_unit, from_pos, direction, dmg_mul, shoo
 				if hit_enemy then
 					self._autohit_current = autohit_data.INIT_RATIO
 				elseif auto_hit_candidate then
-					self._autohit_current = math.min(autohit_data.MAX_RATIO, self._autohit_current + autohit_data.MAX_RATIO * weight)
+					self._autohit_current = math.min(autohit_data.MAX_RATIO, self._autohit_current + (autohit_data.MAX_RATIO - autohit_data.MIN_RATIO) * weight)
 				end
 			end
 		end
