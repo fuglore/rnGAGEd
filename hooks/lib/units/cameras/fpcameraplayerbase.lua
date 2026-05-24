@@ -91,7 +91,10 @@ function FPCameraPlayerBase:recoil_kick(up, down, left, right)
 			if player_state ~= "bipod" then
 				local add = math.abs(v)
 				local max_recoil_mul = (weapon_base:recoil() + weapon_base:recoil_addend()) * weapon_base:recoil_multiplier()
-				weapon_base.regunz_accrec_reduction = math.min(4 * max_recoil_mul, weapon_base.regunz_accrec_reduction and weapon_base.regunz_accrec_reduction + add or add)
+				local max_accrec_penalty = 4 * max_recoil_mul
+				
+				weapon_base.regunz_accrec = math.min(4 * max_recoil_mul, weapon_base.regunz_accrec and weapon_base.regunz_accrec + add or add)
+				weapon_base.regunz_accrec_penalty = weapon_base.regunz_accrec / max_accrec_penalty
 			end
 		end
 	end
@@ -154,17 +157,21 @@ function FPCameraPlayerBase:_vertical_recoil_kick(t, dt)
 	end
 	
 	if not self._accrec_wait then
-		if weapon_base and weapon_base.regunz_accrec_reduction then
+		if weapon_base and weapon_base.regunz_accrec then
 			local player_state = managers.player:current_state()
 
 			if player_state == "bipod" then
-				weapon_base.regunz_accrec_reduction = 0
+				weapon_base.regunz_accrec = 0
+				weapon_base.regunz_accrec_penalty = 0
 			else
 				local max_recoil_mul = (weapon_base:recoil() + weapon_base:recoil_addend()) * weapon_base:recoil_multiplier()
 				local set_n = 10 * max_recoil_mul
 				set_n = set_n * dt_with_mul
 			
-				weapon_base.regunz_accrec_reduction = math.max(0, weapon_base.regunz_accrec_reduction - set_n)
+				weapon_base.regunz_accrec = math.max(0, weapon_base.regunz_accrec - set_n)
+				
+				local max_accrec_penalty = 4 * max_recoil_mul
+				weapon_base.regunz_accrec_penalty = weapon_base.regunz_accrec / max_accrec_penalty
 			end
 		end
 	end

@@ -1149,7 +1149,8 @@ Hooks:PostHook(PlayerStandard, "set_stance_switch_delay", "regunz_stance_switch_
 end)
 
 Hooks:PostHook(PlayerStandard, "_start_action_equip_weapon", "regunz_clean_spread", function(self, t)
-	self._equipped_unit:base().regunz_accrec_reduction = 0
+	self._equipped_unit:base().regunz_accrec = 0
+	self._equipped_unit:base().regunz_accrec_penalty = 0
 end)
 
 function PlayerStandard:_find_pickups(t)

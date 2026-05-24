@@ -19,16 +19,17 @@ function RaycastWeaponBase:regunz_get_slowdown_lerp() --this implementation suck
 end
 
 function NewRaycastWeaponBase:_get_spread(user_unit)
-	local current_state = user_unit:movement()._current_state
+	local current_state = user_unit:movement():current_state()
+	local current_state_name = user_unit:movement():current_state_name()
 
 	if not current_state then
-		return 0.16, 0.16
+		return 0, 0
 	end
 
 	local spread_values = self:weapon_tweak_data().spread
 
 	if not spread_values then
-		return 0.5, 0.5
+		return 0, 0
 	end
 
 	local current_spread_value = spread_values["standing"]
@@ -41,72 +42,49 @@ function NewRaycastWeaponBase:_get_spread(user_unit)
 		spread_x, spread_y = self:_get_spread_from_table(user_unit, current_state, current_spread_value)
 	end
 	
-	if not self._is_saw then
-		if spread_x <= 0 then
-			spread_x = 0.5
+	if not self._is_saw and current_state_name ~= "bipod" then
+		local accrec_spread_add = 0
+		local mov_spread_add = 0
+		
+		if self.regunz_accrec_mul and self.regunz_accrec_mul > 0 then
+			local accrec = self.regunz_accrec_penalty or 0
+			local recoil_index = managers.blackmarket:recoil_index(self._name_id, self:weapon_tweak_data().categories, self._current_stats_indices and self._current_stats_indices.recoil, self._silencer, self._blueprint, current_state, self:is_single_shot())
+			local spread = tweak_data.weapon.stats.spread[recoil_index] * self.regunz_accrec_mul
+			
+			if self.regunz_accrec_inverse then
+				accrec_spread_add = spread * (1 - accrec)
+			else
+				accrec_spread_add = spread * accrec
+			end
 		end
 		
-		if spread_y <= 0 then
-			spread_y = 0.5
+		if self.regunz_movepen_mul and self.regunz_movepen_mul > 0 then
+			local movepen = self.regunz_movement_penalty or 0
+			
+			if movepen > 0 then
+				local concealment_index = math.clamp(self._current_stats_indices.concealment, 1, #tweak_data.weapon.stats.spread)
+				local spread = tweak_data.weapon.stats.spread[concealment_index] * self.regunz_movepen_mul
+				
+				mov_spread_add = spread * movepen
+			end
+		end
+		
+		spread_x = spread_x + accrec_spread_add
+		spread_x = spread_x + mov_spread_add
+		spread_y = spread_y + accrec_spread_add
+		spread_y = spread_y + mov_spread_add
+	
+		if current_state:in_steelsight() and not self._is_saw and self.regunz_zoom_mul then
+			local zoom_mul = self.regunz_zoom_mul
+				
+			spread_x = spread_x * zoom_mul
+			spread_y = spread_y * zoom_mul
 		end
 	end
 
 	if self._spread_multiplier then
 		spread_x = spread_x * self._spread_multiplier[1]
 		spread_y = spread_y * self._spread_multiplier[2]
-	end
-	
-	if not self._is_saw then
-		local accrec = self.regunz_accrec_reduction or 0
-		local movepen = self.regunz_movement_penalty or 0
-		local regunz_mul = 0
-		
-		if self.regunz_accrec_inverse or accrec > 0 and self.regunz_accrec_mul and self.regunz_accrec_mul > 0 then
-			regunz_mul = self.regunz_accrec_reduction or 0
-			
-			spread_x = spread_x + 0.2
-			spread_y = spread_y + 0.2
-		
-			if self.regunz_accrec_inverse then
-				regunz_mul = math.lerp(1, 0, regunz_mul) * self.regunz_accrec_mul
-			else
-				regunz_mul = regunz_mul * self.regunz_accrec_mul
-			end
-		end
-		
-		if movepen > 0 and self.regunz_movepen_mul and self.regunz_movepen_mul > 0 then	
-			spread_x = spread_x + 0.2
-			spread_y = spread_y + 0.2
-		
-			local dressed_mov_penalty = movepen
-			
-			if self.regunz_movepen_mul then
-				dressed_mov_penalty = dressed_mov_penalty * self.regunz_movepen_mul
-			end
-			
-			if self._current_stats.suspicion then
-				local mul = self._current_stats.suspicion
-				dressed_mov_penalty = dressed_mov_penalty * mul
-			end
-		
-			regunz_mul = regunz_mul + dressed_mov_penalty
-		end
-		
-		if regunz_mul > 0 then
-			regunz_mul = regunz_mul + 1
-			
-			--log(tostring(regunz_mul))
-			
-			spread_x = spread_x * regunz_mul
-			spread_y = spread_y * regunz_mul
-		end
-		
-		if self.regunz_zoom_mul and current_state:in_steelsight() then
-			local zoom_mul = self.regunz_zoom_mul
-			
-			spread_x = spread_x * zoom_mul
-			spread_y = spread_y * zoom_mul
-		end
 	end
 
 	return spread_x, spread_y
@@ -149,44 +127,44 @@ end
 
 local gunmuls = {
 	snp = {
-		2,
+		1,
 		0
 	},
 	shotgun = {
 		0,
-		0.25
+		1
 	},
 	revolver = {
-		1.5,
-		0.5
+		1,
+		1
 	},
 	pistol = {
 		1,
-		0.5
+		1
 	},
 	lmg = {
 		1,
-		2
+		2,
 	},
 	akimbo = {
-		0.8,
-		0.5
+		1,
+		1
 	},
 	assault_rifle = {
 		1,
-		0.8
+		1
 	},
 	smg = {
-		0.8,
-		0.5
+		1,
+		1
 	},
 	minigun = {
-		0.5,
+		1,
 		2
 	},
 	regunz_dmr = {
-		0.8,
-		0.8
+		1,
+		1
 	}
 }
 

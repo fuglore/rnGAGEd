@@ -649,6 +649,7 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 	for k, v in pairs(self) do
 		local continue = true
 		local revolver = nil
+		local shotgun = nil
 		
 		if not v.regunned and v.stats then
 			local rifle_buff = false
@@ -657,6 +658,10 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 				local add_dmr = nil
 				local cats = v.categories
 				local do_recoil_tweak = true
+				
+				if cats[1] == "shotgun" or cats[2] == "shotgun" then
+					shotgun = true
+				end
 				
 				if cats[3] == "revolver" or cats[2] == "revolver" then
 					revolver = true
@@ -708,7 +713,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 					end
 					
 					if category == "lmg" then
-						v.stats.spread = math.max(v.stats.spread - 4, 1)
+						v.stats.spread = math.max(1, v.stats.spread - 4)
+						v.stats.recoil = math.max(1, v.stats.recoil - 4)
 						v.has_description = true
 						v.desc_id = "bm_w_cat_lmg"
 					end
@@ -876,8 +882,8 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 						pickup_mul = pickup_mul - (damage_mul * 0.01)
 					end
 					
-					local lower_ammo_pickup = v.use_data and v.use_data.selection_index > 2 or v.CLIP_AMMO_MAX > 100 or v.use_shotgun_reload		
-					local pickup = lower_ammo_pickup and 0.075 or 0.1
+					local lower_ammo_pickup = v.use_data and v.use_data.selection_index > 2 or v.CLIP_AMMO_MAX > 100	
+					local pickup = lower_ammo_pickup and 0.075 or shotgun and 0.2 or 0.1
 					pickup = pickup * pickup_mul
 		
 					local clip_ammo_controlled = math.min(v.CLIP_AMMO_MAX, 100)
@@ -887,7 +893,7 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 						true_pickup_value = math.floor(true_pickup_value)
 					end
 					
-					if true_pickup_value <= 0 then
+					if true_pickup_value <= 0 or shotgun then
 						log(k .. " ammo pickup: " .. true_pickup_value)
 					end
 
