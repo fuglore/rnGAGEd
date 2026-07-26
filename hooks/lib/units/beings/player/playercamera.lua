@@ -6,7 +6,7 @@ function PlayerCamera:init(unit)
 	self._m_cam_right = self._m_cam_rot:x()
 	self._camera_object = World:create_camera()
 
-	self._camera_object:set_near_range(1)
+	self._camera_object:set_near_range(3)
 	self._camera_object:set_far_range(500000)
 	self._camera_object:set_fov(75)
 	self:spawn_camera_unit()

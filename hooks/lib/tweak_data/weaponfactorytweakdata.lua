@@ -51,7 +51,7 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 				end
 			end
 			
-			if v.type ~= "ammo" then
+			if v.type ~= "ammo" and v.type ~= "sight" then
 				local perfect = v.stats.recoil and v.stats.recoil > 0 or v.stats.spread and v.stats.spread > 0
 				local downsides = v.stats.recoil and v.stats.recoil < 0 or v.stats.spread and v.stats.spread < 0
 				

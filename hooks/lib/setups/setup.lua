@@ -29,6 +29,8 @@ function Setup:exec(context)
 	CoreSetup.CoreSetup.exec(self, context)
 end
 
+local bingus = true
+
 function Setup:block_exec()
 	if not self._stuck_in_limbo_t then
 		self._stuck_in_limbo_t = TimerManager:wall_running():time()

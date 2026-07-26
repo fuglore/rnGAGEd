@@ -893,7 +893,7 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 						true_pickup_value = math.floor(true_pickup_value)
 					end
 					
-					if true_pickup_value <= 0 or shotgun then
+					if true_pickup_value <= 0 then
 						log(k .. " ammo pickup: " .. true_pickup_value)
 					end
 
