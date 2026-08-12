@@ -1,4 +1,9 @@
-Hooks:PostHook(SkillTreeTweakData, "init", "reengage_skilltree", function(self)
+local sttd_init = SkillTreeTweakData.init
+
+function SkillTreeTweakData:init()
+	sttd_init(self)
+
+--Hooks:PostHook(SkillTreeTweakData, "init", "reengage_skilltree", function(self)
 	local sandydeck2 = {
 		cost = 0,
 		desc_id = "menu_deckall_2_desc",
@@ -1093,4 +1098,4 @@ Hooks:PostHook(SkillTreeTweakData, "init", "reengage_skilltree", function(self)
 			6
 		}
 	}
-end)
+end

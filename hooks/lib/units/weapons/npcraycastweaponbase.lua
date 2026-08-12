@@ -38,14 +38,21 @@ function NPCRaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_
 		ray_data.from_pos = mvec3_cpy(from_pos)
 	end
 	
+	local falloff
+	
+	if not RNGAGED.settings.disable_balance_changes then
+		falloff = user_unit:base():char_tweak().weapon[self:weapon_tweak_data().usage].FALLOFF
+	end
+	
 	local impact_info = {
 		col_ray = ray_data,
 		weapon_unit = self._unit,
 		user_unit = user_unit,
 		damage = damage,
+		falloff = falloff,
 		shoot_player = shoot_player and self._hit_player
 	}
-	impact_info.armor_piercing = self._unit:base():weapon_tweak_data().armor_piercing or nil
+	impact_info.armor_piercing = self:weapon_tweak_data().armor_piercing or nil
 	
 	managers.game_play_central:add_dynamic_npc_bullet(impact_info)
 	
@@ -67,6 +74,7 @@ function NPCRaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_
 				col_ray = new_ray,
 				weapon_unit = self._unit,
 				user_unit = user_unit,
+				falloff = falloff,
 				damage = damage,
 				shoot_player = impact_info.shoot_player,
 				armor_piercing = impact_info.armor_piercing,

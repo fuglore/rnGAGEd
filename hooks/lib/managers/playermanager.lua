@@ -271,13 +271,17 @@ function PlayerManager:skill_dodge_chance(running, crouching, on_zipline, overri
 	return chance
 end
 
-Hooks:PostHook(PlayerManager, "check_skills", "reguns_check_skillz", function(self)
+local old_chk_skills = PlayerManager.check_skills
+
+function PlayerManager:check_skills()
+	old_chk_skills(self)
+--Hooks:PostHook(PlayerManager, "check_skills", "reguns_check_skillz", function(self)
 	if self:has_category_upgrade("temporary", "dmg_resist_on_unsafe_reload") then
 		self._message_system:register(Message.OnPlayerReload, "power_load_event", callback(self, self, "_on_powerload_event"))
 	else
 		self._message_system:unregister(Message.OnPlayerReload, "power_load_event")
 	end
-end)
+end
 
 function PlayerManager:on_headshot_dealt()
 	local player_unit = self:player_unit()
@@ -406,7 +410,12 @@ function PlayerManager:_volt_clip_check_tase_unit(unit)
 	end
 end
 
-Hooks:PostHook(PlayerManager, "on_damage_dealt", "regunz_reclaim", function(self, unit, damage_info)
+local on_dmg_dealt_old = PlayerManager.on_damage_dealt
+
+function PlayerManager:on_damage_dealt(unit, damage_info)
+	on_dmg_dealt_old(self, unit, damage_info)
+
+--Hooks:PostHook(PlayerManager, "on_damage_dealt", "regunz_reclaim", function(self, unit, damage_info)
 	local player_unit = self:player_unit()
 
 	if not player_unit then
@@ -470,7 +479,7 @@ Hooks:PostHook(PlayerManager, "on_damage_dealt", "regunz_reclaim", function(self
 			end
 		end
 	end	
-end)
+end
 
 function PlayerManager:_on_ammo_pickup()
 	local player_unit = self:player_unit()
@@ -503,7 +512,12 @@ function PlayerManager:_on_ammo_pickup()
 	end
 end
 
-Hooks:PostHook(PlayerManager, "on_killshot", "regunz_killshot", function(self, killed_unit, variant, headshot, weapon_id)
+local killshot_old = PlayerManager.on_killshot
+
+function PlayerManager:on_killshot(killed_unit, variant, headshot, weapon_id)
+	killshot_old(self, killed_unit, variant, headshot, weapon_id)
+
+--Hooks:PostHook(PlayerManager, "on_killshot", "regunz_killshot", function(self, killed_unit, variant, headshot, weapon_id)
 	local player_unit = self:player_unit()
 
 	if not player_unit then
@@ -536,9 +550,7 @@ Hooks:PostHook(PlayerManager, "on_killshot", "regunz_killshot", function(self, k
 			self._armor_grinding_kill_t = t + 2
 		end
 	end
-	
-	
-end)
+end
 
 function PlayerManager:_on_messiah_event()
 	if self._messiah_charges > 0 and self._current_state == "bleed_out" and not self._coroutine_mgr:is_running("get_up_messiah") and not self._coroutine_mgr:is_running("feign_death_up") then
@@ -662,12 +674,16 @@ function PlayerManager:clbk_sandy_tuner_end()
 	end
 end
 
-Hooks:PostHook(PlayerManager, "update", "regunz_upd", function(self, t, dt)
+local old_update = PlayerManager.update
+
+function PlayerManager:update(t, dt)
+	old_update(self, t, dt)
+--Hooks:PostHook(PlayerManager, "update", "regunz_upd", function(self, t, dt)
 	self:_upd_sandy_vfx(t, dt)
 	if managers.groupai and not managers.groupai:state():whisper_mode() then
 		self:upd_style(t, dt)
 	end
-end)
+end
 
 function PlayerManager:_upd_sandy_vfx(t, dt)
 	local player_unit = self:player_unit()

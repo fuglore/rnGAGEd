@@ -36,7 +36,10 @@ local function format_round(num, round_value)
 	return round_value and tostring(math.round(num)) or string.format("%.1f", num):gsub("%.?0+$", "")
 end
 
-Hooks:PostHook(BlackMarketGui, "show_stats", "reengage_redefine_melee_gui", function(self)
+local show_stats_old = BlackMarketGui.show_stats
+
+function BlackMarketGui:show_stats()
+--Hooks:PostHook(BlackMarketGui, "show_stats", "reengage_redefine_melee_gui", function(self)
 	if not self._redefined_melee_gui then
 		local tab_data = self._tabs[self._selected]._data
 		
@@ -482,7 +485,7 @@ Hooks:PostHook(BlackMarketGui, "show_stats", "reengage_redefine_melee_gui", func
 		
 		--self._redefined_melee_gui = true
 	end
-end)
+end
 
 function BlackMarketGui:_get_melee_weapon_stats(name)
 	local base_stats = {}

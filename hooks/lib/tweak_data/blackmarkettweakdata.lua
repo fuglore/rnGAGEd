@@ -1,4 +1,9 @@
-Hooks:PostHook(BlackMarketTweakData, "init", "reengage_bm", function(self, tweak_data)
+local old_bmtd_init = BlackMarketTweakData.init
+
+function BlackMarketTweakData:init(tweak_data)
+	old_bmtd_init(self, tweak_data)
+
+--Hooks:PostHook(BlackMarketTweakData, "init", "reengage_bm", function(self, tweak_data)
 	self.melee_weapons.weapon.no_cleave = true
 	self.melee_weapons.taser.no_cleave = true
 	self.melee_weapons.fight.no_cleave = true
@@ -88,9 +93,14 @@ Hooks:PostHook(BlackMarketTweakData, "init", "reengage_bm", function(self, tweak
 	end
 	
 	
-end)
+end
 
-Hooks:PostHook(BlackMarketTweakData, "_init_projectiles", "reengaged_grenades", function(self, tweak_data)
+local old_bmtd_projectiles = BlackMarketTweakData._init_projectiles
+
+function BlackMarketTweakData:_init_projectiles(tweak_data)
+	old_bmtd_projectiles(self, tweak_data)
+
+--Hooks:PostHook(BlackMarketTweakData, "_init_projectiles", "reengaged_grenades", function(self, tweak_data)
 	self.projectiles.sandy_tuner = {
 		name_id = "bm_grenade_sandy",
 		desc_id = "bm_grenade_sandy_desc",
@@ -126,4 +136,4 @@ Hooks:PostHook(BlackMarketTweakData, "_init_projectiles", "reengaged_grenades", 
 	self.projectiles.dada_com.sounds = {
 		cooldown = "mtl_throw"
 	}
-end)
+end

@@ -19,13 +19,17 @@ local tmp_vec2 = Vector3()
 local mvec_to = Vector3()
 local mvec_spread_direction = Vector3()
 
-Hooks:PostHook(SawWeaponBase, "init", "regunz_saw_skill", function(self, unit)
+local old_saw_init = SawWeaponBase.init
+
+function SawWeaponBase:init(unit)
+	old_saw_init(self, unit)
+--Hooks:PostHook(SawWeaponBase, "init", "regunz_saw_skill", function(self, unit)
 	self._weapon_dmg_resist = managers.player:has_category_upgrade("saw", "grant_dmg_resist")
 	
 	if self._saw_through_shields then
 		self._use_armor_piercing = true
 	end
-end)
+end
 
 local function ray_table_contains(table, unit)
 	for i, hit in pairs(table) do

@@ -204,7 +204,11 @@ function PlayerInventoryGui:_update_info_melee(name)
 	end
 end
 
-Hooks:PostHook(PlayerInventoryGui, "_update_stats", "regunz_melee", function(self, name)
+local update_stats_old = PlayerInventoryGui._update_stats
+
+function PlayerInventoryGui:_update_stats(name)
+	update_stats_old(self, name)
+--Hooks:PostHook(PlayerInventoryGui, "_update_stats", "regunz_melee", function(self, name)
 	if self._rehooked_stats_shown == name then
 		return
 	end
@@ -243,4 +247,4 @@ Hooks:PostHook(PlayerInventoryGui, "_update_stats", "regunz_melee", function(sel
 		})
 		self:_update_info_melee(name)
 	end
-end)
+end

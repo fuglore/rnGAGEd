@@ -154,7 +154,29 @@ function GamePlayCentralManager:check_bullet_hits_player(bullet_info, travel)
 	return
 end
 
-Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", function(self, t, dt)
+function GamePlayCentralManager:modify_dynamic_bullet_damage(bullet_info)
+	if RNGAGED.settings.disable_balance_changes then
+		return
+	end
+	
+	if not bullet_info.falloff then
+		return
+	end
+	
+	local weapon_unit = bullet_info.weapon_unit
+	local weapon_damage = weapon_unit:base()._damage
+	local falloff, _ = CopActionShoot._get_shoot_falloff(self, mvec3_dis(bullet_info.current_pos, bullet_info.col_ray.from_pos), bullet_info.falloff)
+	local mul_add = 1 + bullet_info.user_unit:base():get_total_buff("base_damage")
+	local dmg_mul = mul_add * falloff.dmg_mul
+
+	bullet_info.damage = weapon_damage * dmg_mul
+end
+
+local old_update = GamePlayCentralManager.update
+
+function GamePlayCentralManager:update(t, dt)
+	old_update(self, t, dt)
+--Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", function(self, t, dt)
 	if not self._dynamic_bullets then
 		return
 	end
@@ -182,6 +204,7 @@ Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", f
 			bullet_info.col_ray.unit = player_unit
 			
 			if not bullet_info.turret then
+				self:modify_dynamic_bullet_damage(bullet_info)
 				weapon_base:bullet_class():give_impact_damage(bullet_info.col_ray, bullet_info.weapon_unit, bullet_info.user_unit, bullet_info.damage, bullet_info.armor_piercing)
 			else
 				local damage = weapon_base:_apply_dmg_mul(weapon_base._damage, bullet_info.col_ray, bullet_info.col_ray.from_pos)
@@ -205,6 +228,7 @@ Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", f
 				local col_ray = World:raycast("ray", bullet_info.current_pos, tmp_vec1, "slot_mask", bullet_slotmask, "ignore_unit", ignore_units)
 				
 				if not bullet_info.turret then
+					self:modify_dynamic_bullet_damage(bullet_info)
 					bullet_info.weapon_unit:base():bullet_class():on_collision(col_ray, bullet_info.weapon_unit, bullet_info.user_unit, bullet_info.damage, fires_blanks)
 					--effect_manager:move(bullet_info.effect, col_ray.position)
 				else
@@ -234,6 +258,7 @@ Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", f
 					bullet_info.col_ray.unit = player_unit
 					
 					if not bullet_info.turret then
+						self:modify_dynamic_bullet_damage(bullet_info)
 						weapon_base:bullet_class():give_impact_damage(bullet_info.col_ray, bullet_info.weapon_unit, bullet_info.user_unit, bullet_info.damage, bullet_info.armor_piercing)
 					else
 						local damage = weapon_base:_apply_dmg_mul(weapon_base._damage, bullet_info.col_ray, bullet_info.col_ray.from_pos)
@@ -244,8 +269,12 @@ Hooks:PostHook(GamePlayCentralManager, "update", "regunz_dodge_enemy_bullets", f
 			end
 		end
 	end
-end)
+end
 
-Hooks:PostHook(GamePlayCentralManager, "end_update", "regunz_toilet", function(self, t, dt)
+local old_end_update = GamePlayCentralManager.end_update
+
+function GamePlayCentralManager:end_update(t, dt)
+	old_end_update(self, t, dt)
+--Hooks:PostHook(GamePlayCentralManager, "end_update", "regunz_toilet", function(self, t, dt)
 	self:flush_dynamic_npc_bullets()
-end)
+end

@@ -1,7 +1,13 @@
-Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(self)
-	if RNGAGED.settings.disable_balance_changes then
-		return
-	end
+if RNGAGED.settings.disable_balance_changes then
+	return
+end
+
+local wftd_old = WeaponFactoryTweakData.init
+
+function WeaponFactoryTweakData:init()
+	wftd_old(self)
+--Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(self)
+	
 
 	local saw_parts = {
 		wpn_fps_saw_b_normal = true,
@@ -410,4 +416,4 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 		recoil = -4,
 		suppression = 10
 	}
-end)
+end

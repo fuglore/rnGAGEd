@@ -1,4 +1,8 @@
-Hooks:PostHook(CopSound, "anim_clbk_play_sound", "reeg_cloaker_hit_enter", function(self, unit, queue_name)
+local old_anim_clbk_play_sound = CopSound.anim_clbk_play_sound
+
+function CopSound:anim_clbk_play_sound(unit, queue_name)
+	old_anim_clbk_play_sound(self, unit, queue_name)
+
 	if queue_name ~= "clk_kick_impact" and queue_name ~= "clk_punch_3p" and queue_name ~= "clk_baton_enter" then
 		return
 	end
@@ -12,4 +16,6 @@ Hooks:PostHook(CopSound, "anim_clbk_play_sound", "reeg_cloaker_hit_enter", funct
 			end
 		end
 	end
-end)
+end
+
+--Hooks:PostHook(CopSound, "anim_clbk_play_sound", "reeg_cloaker_hit_enter", function(self, unit, queue_name)

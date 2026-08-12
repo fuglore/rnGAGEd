@@ -1,4 +1,8 @@
-Hooks:PostHook(UpgradesTweakData, "init", "reengage_skillupgrades", function(self, tweak_data)
+local utd_init = UpgradesTweakData.init
+
+function UpgradesTweakData:init(tweak_data)
+	utd_init(self, tweak_data)
+--Hooks:PostHook(UpgradesTweakData, "init", "reengage_skillupgrades", function(self, tweak_data)
 	--sandy perkdeck upgrades
 	--who is sandy tuner and what is she doing in my code
 	self.definitions.sandy_tuner = {
@@ -943,4 +947,4 @@ Hooks:PostHook(UpgradesTweakData, "init", "reengage_skillupgrades", function(sel
 	}
 	
 	
-end)
+end

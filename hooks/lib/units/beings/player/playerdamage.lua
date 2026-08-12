@@ -228,7 +228,6 @@ function PlayerDamage:damage_bullet(attack_data)
 	local pm = managers.player
 	local dmg_mul = pm:damage_reduction_skill_multiplier("bullet")
 	self._last_received_dmg = attack_data.damage
-	self._next_allowed_dmg_t = Application:digest_value(pm:player_timer():time() + self._dmg_interval, true)
 	
 	attack_data.damage = attack_data.damage * dmg_mul	
 	attack_data.damage = managers.mutators:modify_value("PlayerDamage:TakeDamageBullet", attack_data.damage)
@@ -314,10 +313,24 @@ function PlayerDamage:damage_bullet(attack_data)
 	end
 
 	if self:get_real_armor() > 0 then
-		self._unit:sound():play("player_hit")
+		local next_allowed_dmg_t = type(self._next_allowed_dmg_t) == "number" and self._next_allowed_dmg_t or Application:digest_value(self._next_allowed_dmg_t, false)
+		
+		if not next_allowed_dmg_t or next_allowed_dmg_t < TimerManager:game():time() then
+			self._unit:sound():play("player_hit")
+		else
+			local params = {
+				position = damage_info.pos,
+				sound_switch_name = Idstring("shield"),
+				event = "bullet_hit"
+			}
+			
+			managers.game_play_central:_play_sound(params)
+		end
 	else
 		self._unit:sound():play("player_hit_permadamage")
 	end
+	
+	self._next_allowed_dmg_t = Application:digest_value(pm:player_timer():time() + self._dmg_interval, true)
 
 	local shake_armor_multiplier = pm:body_armor_value("damage_shake") * pm:upgrade_value("player", "damage_shake_multiplier", 1)
 	local gui_shake_number = tweak_data.gui.armor_damage_shake_base / shake_armor_multiplier
@@ -645,7 +658,11 @@ function PlayerDamage:_bleed_out_damage(attack_data)
 	end
 end
 
-Hooks:PostHook(PlayerDamage, "revive", "regunz_revive_skills", function(self, silent)
+local old_revive = PlayerDamage.revive
+
+function PlayerDamage:revive(silent)
+	old_revive(self, silent)
+--Hooks:PostHook(PlayerDamage, "revive", "regunz_revive_skills", function(self, silent)
 	if Application:digest_value(self._revives, false) == 0 then
 		return
 	end
@@ -675,7 +692,7 @@ Hooks:PostHook(PlayerDamage, "revive", "regunz_revive_skills", function(self, si
 			managers.hud:set_ammo_amount(secondary_base:selection_index(), secondary_base:ammo_info())
 		end
 	end
-end)
+end
 
 function PlayerDamage:_chk_can_take_dmg()
 	if not self._unit:inventory():mask_visibility() then

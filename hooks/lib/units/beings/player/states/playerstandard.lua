@@ -1142,16 +1142,24 @@ function PlayerStandard:_get_swap_speed_multiplier()
 	return multiplier
 end
 
-Hooks:PostHook(PlayerStandard, "set_stance_switch_delay", "regunz_stance_switch_enter_stance", function(self, t)
+local sssd_old = PlayerStandard.set_stance_switch_delay
+
+function PlayerStandard:set_stance_switch_delay(delay)
+	sssd_old(self, delay)
+--Hooks:PostHook(PlayerStandard, "set_stance_switch_delay", "regunz_stance_switch_enter_stance", function(self, t)
 	self:_stance_entered()
 	self:_update_crosshair_offset()
 	self._equipped_unit:base()._last_saved_reload_prog = nil
-end)
+end
 
-Hooks:PostHook(PlayerStandard, "_start_action_equip_weapon", "regunz_clean_spread", function(self, t)
+local saew_old = PlayerStandard._start_action_equip_weapon
+
+function PlayerStandard:_start_action_equip_weapon(t)
+	saew_old(self, t)
+--Hooks:PostHook(PlayerStandard, "_start_action_equip_weapon", "regunz_clean_spread", function(self, t)
 	self._equipped_unit:base().regunz_accrec = 0
 	self._equipped_unit:base().regunz_accrec_penalty = 0
-end)
+end
 
 function PlayerStandard:_find_pickups(t)
 	local pickups = World:find_units_quick("sphere", self._unit:movement():m_pos(), self._pickup_area, self._slotmask_pickups)
@@ -1736,17 +1744,29 @@ function PlayerStandard:_check_step(t)
 	end
 end
 
-Hooks:PostHook(PlayerStandard, "_interupt_action_reload", "forget_reload", function(self)
-	self._queue_reload_interupt = nil
-end)
+local iar_old = PlayerStandard._interupt_action_reload
 
-Hooks:PostHook(PlayerStandard, "_start_action_unequip_weapon", "play_swap_sound", function(self, t, data)
+function PlayerStandard:_interupt_action_reload(t)
+	iar_old(self, t)
+--Hooks:PostHook(PlayerStandard, "_interupt_action_reload", "forget_reload", function(self)
+	self._queue_reload_interupt = nil
+end
+
+local sauw_old = PlayerStandard._start_action_unequip_weapon
+
+function PlayerStandard:_start_action_unequip_weapon(t, data)
+	sauw_old(self, t, data)
+--Hooks:PostHook(PlayerStandard, "_start_action_unequip_weapon", "play_swap_sound", function(self, t, data)
 	self._unit:sound():play("wp_foley_generic_clip_take_new")
 	self._unit:sound():play("wp_foley_generic_clip_throw")
 	--self._last_saved_reload_prog = nil
-end)
+end
 
-Hooks:PostHook(PlayerStandard, "_start_action_jump", "play_jump_sound", function(self, t, data)
+local sajump_old = PlayerStandard._start_action_jump
+
+function PlayerStandard:_start_action_jump(t, data)
+	sajump_old(self, t, data)
+--Hooks:PostHook(PlayerStandard, "_start_action_jump", "play_jump_sound", function(self, t, data)
 	if not self._played_jump_t or t - self._played_jump_t > 0.55 then
 		if self._jump_vel_xy and mvector3.length(self._jump_vel_xy) > 440 then
 			self._unit:sound():play("wp_foley_generic_clip_throw")
@@ -1756,9 +1776,13 @@ Hooks:PostHook(PlayerStandard, "_start_action_jump", "play_jump_sound", function
 		
 		self._played_jump_t = t
 	end
-end)
+end
 
-Hooks:PostHook(PlayerStandard, "_start_action_ducking", "play_ducking_sound", function(self, t)
+local saduck_old = PlayerStandard._start_action_ducking
+
+function PlayerStandard:_start_action_ducking(t)
+	saduck_old(self, t)
+--Hooks:PostHook(PlayerStandard, "_start_action_ducking", "play_ducking_sound", function(self, t)
 	if self:_interacting() or self:_on_zipline() then
 		return
 	end
@@ -1772,7 +1796,7 @@ Hooks:PostHook(PlayerStandard, "_start_action_ducking", "play_ducking_sound", fu
 		
 		self._unit:sound():play("boot_recoil_lift_gun")
 	end
-end)
+end
 
 function PlayerStandard:_check_action_jump(t, input)
 	local new_action = nil

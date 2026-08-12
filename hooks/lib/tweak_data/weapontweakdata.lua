@@ -181,7 +181,14 @@ function WeaponTweakData:_init_rengaged_stat_changes()
 	}
 end
 
-Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdata)
+local wtd_init = WeaponTweakData.init
+
+function WeaponTweakData:init(tweak_data)
+	wtd_init(self, tweak_data)
+
+--Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdata)
+	log("wiwiwi")
+
 	if not RNGAGED.settings.disable_enemy_projectiles then
 		self.r870_npc.spread = 2
 		self.benelli_npc.spread = 2
@@ -937,4 +944,4 @@ Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdat
 			end
 		end
 	end
-end)
+end
