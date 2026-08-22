@@ -3,6 +3,7 @@
 	"description" : "ye",
 	"author" : "fung",
 	"blt_version" : 2,
+	"priority" : 99,
 	"pre_hooks" : [
 		{
 			"hook_id" : "lib/tweak_data/tweakdata",

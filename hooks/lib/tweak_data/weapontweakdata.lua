@@ -18,6 +18,8 @@ function WeaponTweakData:_init_new_weapons(weapon_data)
 		return wtd_init_new_weapons(self, weapon_data)
 	end
 	
+	self:_init_rengaged_stat_changes()
+	
 	weapon_data.autohit_rifle_default = {
 		INIT_RATIO = 0,
 		MAX_RATIO = 1,
@@ -181,14 +183,7 @@ function WeaponTweakData:_init_rengaged_stat_changes()
 	}
 end
 
-local wtd_init = WeaponTweakData.init
-
-function WeaponTweakData:init(tweak_data)
-	wtd_init(self, tweak_data)
-
---Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdata)
-	log("wiwiwi")
-
+Hooks:PostHook(WeaponTweakData, "init", "regunz_tweaks", function(self, tweakdata)
 	if not RNGAGED.settings.disable_enemy_projectiles then
 		self.r870_npc.spread = 2
 		self.benelli_npc.spread = 2
@@ -649,8 +644,6 @@ function WeaponTweakData:init(tweak_data)
 	self.shuno.desc_id = "bm_w_cat_mini"
 	
 	self.hailstorm.has_description = true
-
-	self:_init_rengaged_stat_changes()
 	local akimbos = self:get_akimbo_mappings()
 	
 	for k, v in pairs(self) do
@@ -944,4 +937,4 @@ function WeaponTweakData:init(tweak_data)
 			end
 		end
 	end
-end
+end)

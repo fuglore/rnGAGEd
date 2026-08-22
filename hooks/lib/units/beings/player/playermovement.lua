@@ -158,12 +158,7 @@ if RNGAGED.settings.disable_balance_changes then
 	return
 end
 
-local old_update = PlayerMovement.update
-
-function PlayerMovement:update(unit, t, dt)
-	old_update(self, unit, t, dt)
-
---Hooks:PostHook(PlayerMovement, "update", "regunz_upd_moveacc", function(self, unit, t, dt)
+Hooks:PostHook(PlayerMovement, "update", "regunz_upd_moveacc", function(self, unit, t, dt)
 	if self._current_state and self._unit:inventory() then
 		local mov_state = self._current_state
 		local equipped_weapon = self._unit:inventory():equipped_unit()
@@ -198,7 +193,7 @@ function PlayerMovement:update(unit, t, dt)
 			end
 		end
 	end
-end
+end)
 
 function PlayerMovement:on_SPOOCed(enemy_unit)
 	local charging_melee = self._current_state.in_melee and self._current_state:in_melee()

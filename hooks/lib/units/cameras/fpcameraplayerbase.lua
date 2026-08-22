@@ -13,9 +13,7 @@ local current_lean_angle_z = 0
 
 local old_update = FPCameraPlayerBase.update
 
-function FPCameraPlayerBase:update(unit, t, dt)
-	old_update(self, unit, t, dt)
---Hooks:PostHook(FPCameraPlayerBase, "update", "FPCameraLean", function(self, unit, t, dt)
+Hooks:PostHook(FPCameraPlayerBase, "update", "FPCameraLean", function(self, unit, t, dt)
 	local velocity = self._parent_unit:sampled_velocity()
 	--unit:m_position(velocity)
 	--mvector3.subtract(velocity, last_pos)
@@ -64,7 +62,7 @@ function FPCameraPlayerBase:update(unit, t, dt)
 	self._head_stance.rotation = temp_rot * (lean_rotation * temp_rot:inverse())
 
 	--unit:m_position(last_pos)
-end
+end)
 
 if not RNGAGED.settings.disable_balance_changes then
 

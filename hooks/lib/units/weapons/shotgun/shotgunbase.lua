@@ -274,11 +274,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------
 
-local old_update_stats_values = ShotgunBase._update_stats_values
-
-function ShotgunBase:_update_stats_values(disallow_replenish, ammo_data)
-	old_update_stats_values(disallow_replenish, ammo_data)
---Hooks:PostHook(ShotgunBase, "_update_stats_values", "regunz_pellets_upgrade", function(self, disallow_replenish, ammo_data)
+Hooks:PostHook(ShotgunBase, "_update_stats_values", "regunz_pellets_upgrade", function(self, disallow_replenish, ammo_data)
 	if self._ammo_data and self._ammo_data.rays ~= nil then
 		self._rays = self._ammo_data.rays
 		
@@ -292,5 +288,5 @@ function ShotgunBase:_update_stats_values(disallow_replenish, ammo_data)
 	
 		self._rays = self._rays + managers.player:upgrade_value("shotgun", "extra_pellets", 0)
 	end
-end
+end)
 

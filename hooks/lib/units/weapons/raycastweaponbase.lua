@@ -431,12 +431,7 @@ function RaycastWeaponBase:_get_anim_start_offset(anim)
 	return self._last_saved_reload_prog
 end
 
-local start_reload_old = RaycastWeaponBase.start_reload
-
-function RaycastWeaponBase:start_reload()
-	start_reload_old(self)
-
---Hooks:PostHook(RaycastWeaponBase, "start_reload", "regunz_clean_up_weaponlib_compatibility", function(self)
+Hooks:PostHook(RaycastWeaponBase, "start_reload", "regunz_clean_up_weaponlib_compatibility", function(self)
 	if not self._last_saved_reload_prog then
 		return
 	end
@@ -460,4 +455,4 @@ function RaycastWeaponBase:start_reload()
 	if current_state._state_data.reload_steelsight_expire_t then
 		current_state._state_data.reload_steelsight_expire_t = current_state._state_data.reload_steelsight_expire_t - self._last_saved_reload_prog
 	end
-end
+end)

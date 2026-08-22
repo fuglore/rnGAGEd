@@ -187,7 +187,7 @@
 	"menu_perseverance_beta_desc": "BASIC: ##$basic##\nInstead of getting downed instantly, you gain the ability to keep on fighting for ##3## seconds with a ##60%## movement penalty before going down.\n\nACE: ##$pro##\nIncreases the duration of Still Standing by ##3## seconds.",
 	
 	"menu_feign_death": "Barracuda",
-	"menu_feign_death_desc": "BASIC: ##$basic##\nUpon getting downed, you have a ##15%## to be able to revive yourself on a whim.\n\nACE: ##$pro##\nThe chance of Barracuda's effect activating is increased to ##30%##.",
+	"menu_feign_death_desc": "BASIC: ##$basic##\nUpon getting downed, you have a ##15%## chance to be able to revive yourself on a whim.\n\nACE: ##$pro##\nThe chance of Barracuda's effect activating is increased to ##30%##.",
 	
 	"menu_pistol_beta_messiah": "Stayin' Alive",
 	"menu_pistol_beta_messiah_desc": "BASIC: ##$basic##\nOnce per heist, you can revive yourself if you kill an enemy while in bleedout.\n\nACE: ##$pro##\nYou gain the ability to get downed ##1## more time before going into custody.",

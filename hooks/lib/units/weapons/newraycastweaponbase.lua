@@ -177,11 +177,7 @@ local slow_guns = {
 	regunz_dmr = true
 }
 
-local upd_stats_values = NewRaycastWeaponBase._update_stats_values
-
-function NewRaycastWeaponBase:_update_stats_values(disallow_replenish, ammo_data)	
-	upd_stats_values(self, disallow_replenish, ammo_data)
---Hooks:PostHook(NewRaycastWeaponBase, "_update_stats_values", "regunz_accfalloff", function(self, disallow_replenish, ammo_data)
+Hooks:PostHook(NewRaycastWeaponBase, "_update_stats_values", "regunz_accfalloff", function(self, disallow_replenish, ammo_data)
 	if self:is_npc() or self:_third_person() then
 		return
 	end
@@ -282,7 +278,7 @@ function NewRaycastWeaponBase:_update_stats_values(disallow_replenish, ammo_data
 	end
 	
 	self._hurt_dmg_increase = managers.player:upgrade_value("weapon", "increase_stagger_dmg", 1)
-end
+end)
 
 function NewRaycastWeaponBase:has_dmg_resist()
 	return self._weapon_dmg_resist
@@ -352,17 +348,13 @@ function NewRaycastWeaponBase:_get_magazine_size_from_parts()
 	return tweak_data.weapon[self._name_id].CLIP_AMMO_MAX
 end
 
-local on_reload_old = NewRaycastWeaponBase.on_reload
-
-function NewRaycastWeaponBase:on_reload(...)
-	on_reload_old(self, ...)
---Hooks:PostHook(NewRaycastWeaponBase, "on_reload", "regunz_forget_reload_progress", function(self)
+Hooks:PostHook(NewRaycastWeaponBase, "on_reload", "regunz_forget_reload_progress", function(self)
 	if self:is_npc() or self:_third_person() or not self._assembly_complete then
 		return
 	end
 	
 	self._last_saved_reload_prog = nil
-end
+end)
 
 function NewRaycastWeaponBase:tweak_data_anim_is_playing(anim)
 	local orig_anim = anim

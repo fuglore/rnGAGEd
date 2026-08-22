@@ -658,11 +658,7 @@ function PlayerDamage:_bleed_out_damage(attack_data)
 	end
 end
 
-local old_revive = PlayerDamage.revive
-
-function PlayerDamage:revive(silent)
-	old_revive(self, silent)
---Hooks:PostHook(PlayerDamage, "revive", "regunz_revive_skills", function(self, silent)
+Hooks:PostHook(PlayerDamage, "revive", "regunz_revive_skills", function(self, silent)
 	if Application:digest_value(self._revives, false) == 0 then
 		return
 	end
@@ -692,7 +688,7 @@ function PlayerDamage:revive(silent)
 			managers.hud:set_ammo_amount(secondary_base:selection_index(), secondary_base:ammo_info())
 		end
 	end
-end
+end)
 
 function PlayerDamage:_chk_can_take_dmg()
 	if not self._unit:inventory():mask_visibility() then

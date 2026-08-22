@@ -7,36 +7,34 @@ local old_stats_func = WeaponDescription._get_stats
 function WeaponDescription._get_stats(name, category, slot, blueprint)
 	local base_stats, mods_stats, skill_stats = old_stats_func(name, category, slot, blueprint)
 	
-	if not RNGAGED.settings.disable_balance_changes then
-		if base_stats.reload and base_stats.concealment then
-			local tweak_stats = tweak_data.weapon.stats
-			local reload_mul = tweak_stats.concealment_reload_mul[base_stats.concealment.index]
-			base_stats.reload.value = base_stats.reload.value / reload_mul
+	if base_stats.reload and base_stats.concealment then
+		local tweak_stats = tweak_data.weapon.stats
+		local reload_mul = tweak_stats.concealment_reload_mul[base_stats.concealment.index]
+		base_stats.reload.value = base_stats.reload.value / reload_mul
+		
+		local old_mods_reload = mods_stats.reload and mods_stats.reload.value
+		
+		if mods_stats.concealment and mods_stats.concealment.index then
+			local index = math.clamp(base_stats.concealment.index + mods_stats.concealment.index, 1, #tweak_stats.concealment)
+			--log(tostring(index))
+			local reload_mul = tweak_stats.concealment_reload_mul[index]
 			
-			local old_mods_reload = mods_stats.reload and mods_stats.reload.value
-			
-			if mods_stats.concealment and mods_stats.concealment.index then
-				local index = math.clamp(base_stats.concealment.index + mods_stats.concealment.index, 1, #tweak_stats.concealment)
-				--log(tostring(index))
-				local reload_mul = tweak_stats.concealment_reload_mul[index]
+			if old_mods_reload then
+				local to_add = base_stats.reload.value / reload_mul
+				to_add = to_add - base_stats.reload.value
 				
-				if old_mods_reload then
-					local to_add = base_stats.reload.value / reload_mul
-					to_add = to_add - base_stats.reload.value
-					
-					mods_stats.reload.value = old_mods_reload + to_add
-				else
-					local to_add = base_stats.reload.value / reload_mul
-					to_add = to_add - base_stats.reload.value
-					mods_stats.reload.value = to_add
-				end
+				mods_stats.reload.value = old_mods_reload + to_add
+			else
+				local to_add = base_stats.reload.value / reload_mul
+				to_add = to_add - base_stats.reload.value
+				mods_stats.reload.value = to_add
 			end
 		end
-		
-		if skill_stats and skill_stats.recoil then
-			local cur_value = math.ceil(math.abs(skill_stats.recoil.value))
-			skill_stats.recoil.value = cur_value
-		end
+	end
+	
+	if skill_stats and skill_stats.recoil then
+		local cur_value = math.ceil(math.abs(skill_stats.recoil.value))
+		skill_stats.recoil.value = cur_value
 	end
 	
 	return base_stats, mods_stats, skill_stats

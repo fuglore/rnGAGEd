@@ -25,18 +25,13 @@ function PlayerCamera:init(unit)
 	end
 end
 
-local viewport_setup_old = PlayerCamera.setup_viewport
-
-function PlayerCamera:setup_viewport(data)
-	viewport_setup_old(self, data)
-
---Hooks:PostHook(PlayerCamera, "setup_viewport", "regunz_freefall", function(self)
+Hooks:PostHook(PlayerCamera, "setup_viewport", "regunz_freefall", function(self)
 	self._shakers.freefall = self._shaker:play("player_freefall", 0, 0.01)
 	local freq = 95 / 140
 	self._shakers.headbob_crouch = self._shaker:play("headbob", 0, freq)
 	local run_freq = 175 / 150
 	self._shakers.headbob_run = self._shaker:play("headbob", 0, run_freq)
-end
+end)
 
 function PlayerCamera:set_shaker_parameter_soft(effect, parameter, value, rate)
 	if not self._shakers then

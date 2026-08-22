@@ -44,20 +44,32 @@ function NPCRaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_
 		falloff = user_unit:base():char_tweak().weapon[self:weapon_tweak_data().usage].FALLOFF
 	end
 	
+	local burst_id
+	local num_rays = (tweak_data.weapon[self._name_id] or {}).rays or 1
+	
+	if num_rays > 1 then
+		burst_id = "burst_id:"..tostring(user_unit:key())..tostring(self._unit:key())..tostring(num_rays)..":"
+		
+		if shoot_player then
+			burst_id = burst_id.."hit_player"
+		end
+		
+		burst_id = managers.game_play_central:make_burst_id_good(burst_id)
+	end
+	
 	local impact_info = {
 		col_ray = ray_data,
 		weapon_unit = self._unit,
 		user_unit = user_unit,
 		damage = damage,
 		falloff = falloff,
-		shoot_player = shoot_player and self._hit_player
+		shoot_player = shoot_player and self._hit_player,
+		burst_id = burst_id
 	}
 	impact_info.armor_piercing = self:weapon_tweak_data().armor_piercing or nil
 	
 	managers.game_play_central:add_dynamic_npc_bullet(impact_info)
-	
-	local num_rays = (tweak_data.weapon[self._name_id] or {}).rays or 1
-	
+
 	if num_rays > 1 then
 		for i = 1, num_rays - 1 do
 			local new_ray = {
@@ -78,6 +90,7 @@ function NPCRaycastWeaponBase:_fire_raycast(user_unit, from_pos, direction, dmg_
 				damage = damage,
 				shoot_player = impact_info.shoot_player,
 				armor_piercing = impact_info.armor_piercing,
+				burst_id = impact_info.burst_id,
 			}
 			
 			managers.game_play_central:add_dynamic_npc_bullet(imp_info_rays)

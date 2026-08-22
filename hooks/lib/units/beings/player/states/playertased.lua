@@ -1,13 +1,9 @@
 local tmp_vec1 = Vector3()
 
-local ptinit_old = PlayerTased.init
-
-function PlayerTased:init(...)
-	ptinit_old(self, ...)
---Hooks:PostHook(PlayerTased, "init", "regunz_taser_skill", function(self, ...)
+Hooks:PostHook(PlayerTased, "init", "regunz_taser_skill", function(self, ...)
 	local pm = managers.player
 	self._move_while_tased = pm:has_category_upgrade("player", "move_while_tased")
-end
+end)
 
 function PlayerTased:enter(state_data, enter_data)
 	PlayerTased.super.enter(self, state_data, enter_data)
