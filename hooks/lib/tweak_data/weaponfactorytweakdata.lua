@@ -410,4 +410,17 @@ Hooks:PostHook(WeaponFactoryTweakData, "init", "regunz_weaponmods", function(sel
 		recoil = -4,
 		suppression = 10
 	}
+	
+	--snipers
+	
+	--rattlesnake
+	self.parts.wpn_fps_snp_msr_b_long.stats.spread = nil
+	self.parts.wpn_fps_snp_msr_b_long.stats.recoil = 1
+	
+	self.parts.wpn_fps_snp_msr_body_msr.stats.recoil = -1
+	
+	--r93
+	self.parts.wpn_fps_snp_r93_b_short.stats.spread = -1
+	
+	self.parts.wpn_fps_snp_r93_body_wood.stats.concealment = -1
 end)
